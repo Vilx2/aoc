@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Test</title>
+</head>
+<body>
+    <script>
+        function Day2() {
+            function furbelize(data) {
+                data = data.slice();
+            
+                var i = 0;
+                var done = false;
+                while ( !done ) {
+                    switch ( data[i] ) {
+                        case 1:
+                            data[data[i+3]] = data[data[i+1]] + data[data[i+2]];
+                            break;
+                        case 2:
+                            data[data[i+3]] = data[data[i+1]] * data[data[i+2]];
+                            break;
+                        case 99:
+                            done = true;
+                            break;
+                        default:
+                            done = true;
+                            console.log('WAAAAT?! Got ' + data[i] + ' at position ' + i);
+                            break;
+                    }
+                    i+=4;
+                }
+                return data[0];
+            }
+            
+            function findFubar() {
+                var data = [1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,1,10,19,2,9,19,23,1,9,23,27,2,27,9,31,1,31,5,35,2,35,9,39,1,39,10,43,2,43,13,47,1,47,6,51,2,51,10,55,1,9,55,59,2,6,59,63,1,63,6,67,1,67,10,71,1,71,10,75,2,9,75,79,1,5,79,83,2,9,83,87,1,87,9,91,2,91,13,95,1,95,9,99,1,99,6,103,2,103,6,107,1,107,5,111,1,13,111,115,2,115,6,119,1,119,5,123,1,2,123,127,1,6,127,0,99,2,14,0,0];
+            
+                for ( var a = 0; a <= 99; a++ ) {
+                    for ( var b = 0; b <= 99; b++ ) {
+                        data[1] = a;
+                        data[2] = b;
+                        if ( furbelize(data) == 19690720 ) {
+                            console.log("Fubar found at " + a + ";" + b);
+                        }
+                    }
+                }
+                
+                console.log("Done!");
+            }
+            
+            findFubar();
+        }
+        function Day3() {
+            var L1 = ["R998","D934","L448","U443","R583","U398","R763","U98","R435","U984","L196","U410","L475","D163","R776","D796","R175","U640","R805","D857","R935","D768","L99","D75","R354","U551","L986","D592","R51","U648","L108","U8","R44","U298","L578","U710","R745","U60","L536","D62","R620","D454","L143","U407","R465","U606","L367","U107","L581","U900","R495","D12","R763","D244","R946","D424","R367","D696","L534","U452","R274","D942","L813","U336","L742","U134","R571","U703","R941","D532","L903","D833","L821","D577","L598","D83","R858","U798","L802","D852","R913","U309","L784","D235","L446","D571","R222","D714","R6","D379","R130","D313","R276","U632","L474","U11","L551","U257","R239","U218","R592","U901","L596","D367","L34","D397","R520","U547","L795","U192","R960","U77","L825","U954","R307","D399","R958","U239","R514","D863","L162","U266","R705","U731","R458","D514","R42","U314","R700","D651","L626","U555","R774","U773","R553","D107","L404","D100","R149","U845","L58","U674","R695","U255","R816","D884","R568","U618","R510","D566","L388","D947","L851","U127","L116","U143","L744","D361","L336","U903","L202","U683","R287","D174","L229","U371","L298","U839","L27","U462","R443","D39","R411","U788","L197","D160","L289","U840","L78","D262","R352","U83","R20","U109","R657","D225","R587","D968","R576","D791","R493","U805","R139","D699","R783","U140","L371","D170","L635","U257","R331","D311","R725","D970","R57","D986","L222","D760","L830","D960","L901","D367","R469","D560","L593","D940","L71","D384","R603","D689","R250","D859","L156","U499","L850","U166","R726","D210","L36","D584","R672","U47","L713","U985","R551","U22","L499","D575","R210","D829","L186","U340","R696","D939","L744","D46","L896","U467","L214","D71","R376","D379","L1","U870","R785","D779","L94","U723","L199","D185","R210","U937","R645","U25","R116","D821","R964","U959","R569","U496","R809","U112","R712","D315","L747","U754","L66","U614","L454","D945","R214","U965","L248","U702","L287","D863","R700","U768","R139","D242","R914","D818","R340","D60","L400","D924","R69","U73","L449","U393","L906"];
+            var L2 = ["L1005","D207","R487","U831","R81","U507","R701","D855","R978","U790","R856","U517","R693","D726","L857","D442","L13","U441","R184","D42","R27","D773","R797","D242","L689","D958","R981","D279","L635","D881","L907","U716","L90","U142","R618","D188","L725","U329","R717","D857","L583","U851","L140","U903","R363","U226","L413","U240","R772","U523","L860","U596","L861","D198","L44","U956","R862","U683","L542","U581","L346","U376","L568","D488","L254","D565","R480","D418","L567","U73","R397","U265","R632","U87","R803","D85","L100","D12","L989","U886","R279","U507","R274","U17","L36","U309","L189","D145","R50","U408","L451","D37","R930","D566","R96","U673","L302","U859","R814","U478","R218","U494","R177","D85","L376","U545","L106","U551","L469","U333","R685","U625","L933","U99","R817","D473","R412","D203","R912","U460","L527","D730","L193","U894","L256","D209","L868","D942","L8","U532","L270","U147","R919","U899","R256","U124","R204","D199","L170","D844","R974","U16","R722","U12","L470","D51","R821","U730","L498","U311","R587","D570","R981","D917","R440","D485","R179","U874","R26","D310","R302","U260","R446","D241","R694","D138","L400","D852","L194","U598","R73","U387","R660","D597","L803","D571","L956","D89","L394","U564","L287","U668","L9","D103","R152","D318","L215","U460","L870","U997","L595","D479","R262","U531","R609","U50","L165","U704","L826","D527","L901","D857","L914","U623","R432","D988","R562","D301","L277","U274","R39","D177","L827","U944","R64","U560","R801","D83","R388","U978","R387","U435","L759","U200","L760","U403","L218","D399","L178","U700","L75","U749","R85","U368","R538","U3","L172","D634","R518","D435","L542","U347","L745","U353","L178","D133","L475","U459","L522","U354","R184","U339","R845","D145","L44","U61","L603","U256","R534","U558","L998","D36","R42","U379","R813","D412","R878","D370","R629","U883","L490","D674","L863","U506","L961","D882","R436","D984","L229","D78","L779","D117","L674","U850","L494","D205","L988","D202","L368","U955","L662","U647","R774","D575","L753","D294","R131","U318","R873","U114","L30"];
+        
+            function getMinMax(line) {
+                var minX = 0, maxX = 0, minY = 0, maxY = 0, x = 0, y = 0;
+                
+                for ( var i of line ) {
+                    var dir = i[0];
+                    var cnt = parseInt(i.substr(1));
+                    switch ( dir ) {
+                        case 'R':
+                            x += cnt;
+                            break;
+                        case 'L':
+                            x -= cnt;
+                            break;
+                        case 'U':
+                            y -= cnt;
+                            break;
+                        case 'D':
+                            y += cnt;
+                            break;
+                        default:
+                            throw "WTF?! Direction=" + dir;
+                    }
+                    
+                    minX = Math.min(x, minX);
+                    maxX = Math.max(x, maxX);
+                    minY = Math.min(y, minY);
+                    maxY = Math.max(y, maxY);
+                }
+                
+                console.log(`minX = ${minX} maxX = ${maxX} minY = ${minY} maxY = ${maxY}`);
+            }
+            
+            function toSegments(line) {
+                var x0 = 0, y0 = 0;
+                var ret = [];
+                var first = true;
+                var d = 0;
+                
+                for ( var i of line ) {
+                    var dir = i[0];
+                    var cnt = parseInt(i.substr(1));
+                    var x1 = x0, y1 = y0;
+                    switch ( dir ) {
+                        case 'R':
+                            x1 += cnt;
+                            break;
+                        case 'L':
+                            x1 -= cnt;
+                            break;
+                        case 'U':
+                            y1 -= cnt;
+                            break;
+                        case 'D':
+                            y1 += cnt;
+                            break;
+                        default:
+                            throw "WTF?! Direction=" + dir;
+                    }
+                    ret.push({
+                        x0: x0,
+                        y0: y0,
+                        x1: x1, 
+                        y1: y1,
+                        d: d,
+                        first: first
+                    });
+                    d += Math.abs(x0-x1) + Math.abs(y0-y1);
+                    x0 = x1;
+                    y0 = y1;
+                    first = false;
+                }
+                return ret;
+            }
+            
+            function findClosestPoint(seg1, seg2) {
+                var best = null;
+                for ( var s1 of seg1 ) {
+                    for ( var s2 of seg2 ) {
+                        var s1x0 = Math.min(s1.x0, s1.x1);
+                        var s1x1 = Math.max(s1.x0, s1.x1);
+                        var s1y0 = Math.min(s1.y0, s1.y1);
+                        var s1y1 = Math.max(s1.y0, s1.y1);
+                        
+                        var s2x0 = Math.min(s2.x0, s2.x1);
+                        var s2x1 = Math.max(s2.x0, s2.x1);
+                        var s2y0 = Math.min(s2.y0, s2.y1);
+                        var s2y1 = Math.max(s2.y0, s2.y1);
+                    
+                        if ( s1x1 < s2x0 || s1x0 > s2x1 || s1y1 < s2y0 || s1y0 > s2y1 ) {
+                            continue;
+                        }
+                        
+                        var x0 = Math.max(s1x0, s2x0);
+                        var x1 = Math.min(s1x1, s2x1);
+                        var y0 = Math.max(s1y0, s2y0);
+                        var y1 = Math.min(s1y1, s2y1);
+                        
+                        var fx = 0, fy = 0;
+                        
+                        if ( x0 < 0 && x1 < 0 ) {
+                            fx = x1;
+                        } else if ( x0 > 0 && x1 > 0 ) {
+                            fx = x0;
+                        }
+                        
+                        if ( y0 < 0 && y1 < 0 ) {
+                            fy = y1;
+                        } else if ( y0 > 0 && y1 > 0 ) {
+                            fy = y0;
+                        }
+                        
+                        if ( fx == 0 && fy == 0 && (s1.first || s2.first) ) {
+                            continue;
+                        }
+                        
+                        var d = s1.d + s2.d + Math.abs(fx-s1.x0) + Math.abs(fy-s1.y0) + Math.abs(fx-s2.x0) + Math.abs(fy-s2.y0)
+                        
+                        console.log(`(${s1.x0};${s1.y0}-${s1.x1};${s1.y1}) crosses (${s2.x0};${s2.y0}-${s2.x1};${s2.y1}) at (${fx};${fy}).`);
+                        
+                        if ( !best || best.d > d ) {
+                            best = {x : fx, y: fy, d: d};
+                        } 
+                    }
+                }
+                console.log(`Best result: (${best.x};${best.y}) with D=${Math.abs(best.x) + Math.abs(best.y)} and d=${best.d}`);
+            }
+            
+            var seg1 = toSegments(L1);
+            var seg2 = toSegments(L2);
+            findClosestPoint(seg1, seg2);
+        }
+        function Day4() {
+        
+            function part1() {
+                var digits = [0, 0, 0, 0, 0, 0];
+                var good = 0;
+                for ( var i = 138241; i <= 674034; i++ ) {
+                    for ( var tmp = i, j = 5; tmp; tmp = Math.floor(tmp / 10), j--) {
+                        digits[j] = tmp % 10;
+                    }
+                    
+                    var isGood = false;
+                    for ( var j = 1; j <= 5; j++ ) {
+                        if ( digits[j] < digits[j-1] ) {
+                            isGood = false;
+                            break;
+                        }
+                        if ( digits[j] == digits[j-1] ) {
+                            isGood = true;
+                        }
+                    }
+                    
+                    if ( isGood ) {
+                        good++;
+                    }
+                }
+                
+                console.log(good);
+            }
+            function part2() {
+                var digits = [0, 0, 0, 0, 0, 0];
+                var good = 0;
+                for ( var i = 138241; i <= 674034; i++ ) {
+                    for ( var tmp = i, j = 5; tmp; tmp = Math.floor(tmp / 10), j--) {
+                        digits[j] = tmp % 10;
+                    }
+                    
+                    var isGood = false;
+                    for ( var j = 1; j <= 5; j++ ) {
+                        if ( digits[j] < digits[j-1] ) {
+                            isGood = false;
+                            break;
+                        }
+                        if (
+                            digits[j] == digits[j-1] 
+                            && (j < 2 || digits[j-2] != digits[j])
+                            && (j > 4 || digits[j+1] != digits[j])
+                        ) {
+                            isGood = true;
+                        }
+                    }
+                    
+                    if ( isGood ) {
+                        good++;
+                    }
+                }
+                
+                console.log(good);
+            }
+            
+           
+            part1();
+            part2();            
+        }
+        function Day5() {
+            function process(data, input) {
+                data = data.slice();
+            
+                var dataPos = 0, inputPos = 0;
+                var paramModes;
+                var done = false;
+                var output = [];
+
+                function getParam(n) {
+                    switch ( paramModes[n] ) {
+                        case 0:
+                            return data[data[dataPos+1+n]];
+                        case 1:
+                            return data[dataPos+1+n];
+                        default:
+                            throw "Unknown parameter mode " + mode;
+                    }
+                }
+                function setParam(n, value) {
+                    switch ( paramModes[n] ) {
+                        case 0:
+                            data[data[dataPos+1+n]] = value;
+                            return;
+                        case 1:
+                            throw "Write to immediate mode!";
+                        default:
+                            throw "Unknown parameter mode " + paramModes[n];
+                    }
+                }
+                
+                while ( !done ) {
+                    var instruction = data[dataPos] % 100;
+                    var paramModes = [0, 0, 0, 0];
+                    for ( var pm = Math.floor(data[dataPos] / 100), j = 0; pm > 0; pm = Math.floor(pm/10), j++ ) {
+                        paramModes[j] = pm % 10;
+                    }
+                
+                    switch ( instruction ) {
+                        case 1:
+                            setParam(2, getParam(0) + getParam(1)); 
+                            dataPos += 4;
+                            break;
+                        case 2:
+                            setParam(2, getParam(0) * getParam(1)); 
+                            dataPos += 4;
+                            break;
+                        case 3:
+                            setParam(0, input[inputPos]);
+                            inputPos++;
+                            dataPos+= 2;
+                            break;
+                        case 4:
+                            output.push(getParam(0));
+                            dataPos+= 2;
+                            break;
+                        case 5:
+                            if ( getParam(0) != 0 ) {
+                                dataPos = getParam(1);
+                            } else {
+                                dataPos += 3;
+                            }
+                            break;
+                        case 6:
+                            if ( getParam(0) == 0 ) {
+                                dataPos = getParam(1);
+                            } else {
+                                dataPos += 3;
+                            }
+                            break;
+                        case 7:
+                            setParam(2, getParam(0) < getParam(1) ? 1 : 0 );
+                            dataPos+= 4;
+                            break;
+                        case 8:
+                            setParam(2, getParam(0) == getParam(1) ? 1 : 0 );
+                            dataPos+= 4;
+                            break;
+                        case 99:
+                            done = true;
+                            break;
+                        default:
+                            throw 'Invalid instruction ' + instruction + ' at position ' + dataPos;
+                            break;
+                    }
+                }
+                return output;
+            }
+            
+            var data = [3,225,1,225,6,6,1100,1,238,225,104,0,1101,48,82,225,102,59,84,224,1001,224,-944,224,4,224,102,8,223,223,101,6,224,224,1,223,224,223,1101,92,58,224,101,-150,224,224,4,224,102,8,223,223,1001,224,3,224,1,224,223,223,1102,10,89,224,101,-890,224,224,4,224,1002,223,8,223,1001,224,5,224,1,224,223,223,1101,29,16,225,101,23,110,224,1001,224,-95,224,4,224,102,8,223,223,1001,224,3,224,1,223,224,223,1102,75,72,225,1102,51,8,225,1102,26,16,225,1102,8,49,225,1001,122,64,224,1001,224,-113,224,4,224,102,8,223,223,1001,224,3,224,1,224,223,223,1102,55,72,225,1002,174,28,224,101,-896,224,224,4,224,1002,223,8,223,101,4,224,224,1,224,223,223,1102,57,32,225,2,113,117,224,101,-1326,224,224,4,224,102,8,223,223,101,5,224,224,1,223,224,223,1,148,13,224,101,-120,224,224,4,224,1002,223,8,223,101,7,224,224,1,223,224,223,4,223,99,0,0,0,677,0,0,0,0,0,0,0,0,0,0,0,1105,0,99999,1105,227,247,1105,1,99999,1005,227,99999,1005,0,256,1105,1,99999,1106,227,99999,1106,0,265,1105,1,99999,1006,0,99999,1006,227,274,1105,1,99999,1105,1,280,1105,1,99999,1,225,225,225,1101,294,0,0,105,1,0,1105,1,99999,1106,0,300,1105,1,99999,1,225,225,225,1101,314,0,0,106,0,0,1105,1,99999,8,677,226,224,102,2,223,223,1006,224,329,101,1,223,223,107,677,677,224,1002,223,2,223,1006,224,344,101,1,223,223,8,226,677,224,102,2,223,223,1006,224,359,101,1,223,223,107,226,226,224,102,2,223,223,1005,224,374,1001,223,1,223,1108,677,226,224,1002,223,2,223,1006,224,389,101,1,223,223,107,677,226,224,102,2,223,223,1006,224,404,1001,223,1,223,1107,226,677,224,1002,223,2,223,1006,224,419,1001,223,1,223,108,677,677,224,102,2,223,223,1005,224,434,1001,223,1,223,1008,677,226,224,1002,223,2,223,1006,224,449,1001,223,1,223,7,226,677,224,1002,223,2,223,1006,224,464,1001,223,1,223,1007,677,677,224,102,2,223,223,1005,224,479,1001,223,1,223,1007,226,226,224,1002,223,2,223,1005,224,494,1001,223,1,223,108,226,226,224,1002,223,2,223,1005,224,509,1001,223,1,223,1007,226,677,224,1002,223,2,223,1006,224,524,101,1,223,223,1107,677,677,224,102,2,223,223,1005,224,539,101,1,223,223,1107,677,226,224,102,2,223,223,1005,224,554,1001,223,1,223,108,677,226,224,1002,223,2,223,1006,224,569,1001,223,1,223,1108,226,677,224,1002,223,2,223,1006,224,584,101,1,223,223,8,677,677,224,1002,223,2,223,1006,224,599,1001,223,1,223,1008,226,226,224,102,2,223,223,1006,224,614,101,1,223,223,7,677,677,224,1002,223,2,223,1006,224,629,101,1,223,223,1008,677,677,224,102,2,223,223,1005,224,644,101,1,223,223,7,677,226,224,1002,223,2,223,1005,224,659,101,1,223,223,1108,226,226,224,102,2,223,223,1006,224,674,1001,223,1,223,4,223,99,226];
+            var input = [5];
+            
+            
+            var output = process(data, input);
+            console.log(output);        
+        }
+        function Day6() {
+            var data = {'KYR':'VZ3','KMC':'71B','B6X':'RST','91Q':'T9P','PGY':'WLC','6B2':'KGW','B1P':'CYZ','SHS':'NQ8','4KP':'J94','GB9':'4ZV','NVS':'CDS','KFS':'26G','Z5D':'3QS','WRF':'N5M','8F1':'97Y','PH6':'V4H','CS2':'QTK','Z2Y':'CCC','GV6':'KTK','92Z':'Z2Y','ZJ4':'M9G','Y7M':'KKC','WKQ':'V4X','1Q3':'T8V','25K':'VBQ','YVY':'SY7','2VD':'BZ3','2TP':'6ZG','JSV':'3NY','HQL':'NPB','92P':'3F4','R49':'3SB','LYK':'5P4','8LV':'VKW','814':'8LS','17Z':'26W','X2T':'C4W','Z4W':'XX9','54T':'VXG','D19':'LZN','8LY':'4SL','HPN':'V4J','M6D':'YHV','PYG':'F7R','CSR':'5FX','4M4':'QVT','6CB':'L2S','3DY':'58X','JH4':'PK7','WS4':'SGK','3F8':'XMQ','QHW':'GFB','9V5':'RNM','THN':'ZBQ','YX1':'XLX','T5P':'HDJ','NQ8':'KFS','Q47':'P4Q','WJY':'JP3','C9P':'DT6','CXF':'MW5','FC4':'D5S','MHD':'1ZD','BFJ':'YZT','JSY':'DNV','YQ7':'8WZ','M5R':'25L','QFJ':'Y8M','BNK':'7L3','3X8':'GLD','91M':'5SG','5MG':'1BQ','ZK2':'BZT','8V9':'167','1YY':'C3Y','CRV':'85M','RST':'469','KCK':'RWS','CQQ':'RL2','Q7S':'YBV','T8W':'DTS','FQ2':'LBT','V5F':'SGZ','MHK':'PJZ','JCL':'TZJ','N5M':'Y63','CX6':'79F','97Y':'21X','QVD':'41J','DNV':'JGF','TX3':'TSJ','MRL':'RJF','WHY':'9BF','TZV':'7HB','3PY':'W9W','YZ8':'K1X','769':'19H','6TP':'CJG','R9Z':'YZC','V81':'CL7','RN1':'G7M','9HG':'2XG','Z89':'1DN','6XV':'STM','34W':'LW2','MZP':'QPH','3WK':'DV5','M8J':'86B','KKN':'FLC','4Y5':'FB9','RW7':'2T6','PJH':'4JN','HNF':'4KP','B48':'278','1JD':'N7K','RWS':'WJZ','G5Q':'RWS','YNV':'JDP','G6N':'17L','LQP':'VJN','76J':'RN1','T7F':'278','FQN':'HQL','JK9':'JTT','8KG':'91M','9NF':'G49','RGR':'DWP','2N3':'YXL','B18':'QM8','S7P':'MG2','K6Z':'81M','FGQ':'N7Y','15F':'FQN','41G':'WSQ','TZJ':'FJ5','88V':'4QK','P29':'DGZ','C1F':'WQX','25L':'RZD','JGX':'JH4','8Z5':'DPB','1BQ':'3RK','CV3':'WLQ','QXC':'F52','KBX':'HYQ','JTT':'W29','RZ4':'K54','VR4':'QHS','888':'T1M','F8W':'635','95B':'17Z','KR1':'YV7','D2T':'4FX','SP9':'HBR','LYN':'S7G','BCL':'FDM','F12':'QJG','Q66':'V5M','7SB':'Y9G','GC4':'K3V','HLD':'R8H','K72':'MZY','XHS':'K6N','ZS9':'N7C','LD8':'CKC','K3T':'FCY','HNG':'BBS','2YJ':'PFR','YXR':'LVD','ZGK':'PM4','DV5':'L17','LJ7':'QM1','ZPX':'FMW','5MQ':'K7C','HJ5':'H5M','YGJ':'YHV','XW3':'CC2','FKX':'1P1','5DP':'J5D','RFS':'W74','5SG':'KCK','QBX':'CSG','PCP':'Z86','2CP':'248','7X6':'XDK','2Y3':'2YJ','JCF':'M81','QTK':'LL4','DGQ':'5JF','QRZ':'QYM','DLC':'9L6','R5C':'529','8PP':'MWH','7QR':'DWL','TP2':'Y4B','W29':'5SL','YF5':'7XN','LH5':'1JV','RCJ':'GWJ','5P7':'FCS','57Q':'ZFQ','GG5':'8NL','DM6':'N55','YXN':'NYG','YZV':'3NX','WTK':'NND','GWJ':'D6F','9M1':'H3C','P2C':'TXS','343':'NH2','CKC':'X22','G24':'1JH','DWW':'FQ2','DW7':'PZ2','5KG':'S1H','5NM':'KTG','FWW':'3KW','YDY':'22M','DDY':'YFF','3WQ':'BD8','SXJ':'CS2','DG2':'J31','PLL':'4DC','RX9':'DMC','GDX':'VQ4','CL7':'RX9','NL3':'VTL','SCL':'GQR','HQK':'YZF','LQD':'4LC','FMW':'JLS','W6Q':'DSQ','RLM':'BV7','S36':'T7F','CBH':'RMR','T9P':'5Y7','Z81':'XR3','WDG':'965','8KN':'MZC','HQN':'GTL','Z99':'RDH','4FX':'9NF','SN6':'X33','LZG':'L88','56V':'9HG','BD8':'VWB','17L':'Q1M','YK1':'NNH','N9N':'SFK','2LF':'KRZ','6W9':'F5B','1NP':'M9C','JQS':'ZS9','Y32':'M27','RVV':'SQ6','WW4':'DGQ','P3Q':'M8F','X58':'7YJ','7L3':'8V9','VZ9':'GS7','NS2':'RZV','4WF':'FKJ','646':'YV8','88Q':'6JH','5Z7':'LW5','26W':'DW1','CWD':'WN2','CBN':'24F','Y7Z':'4TC','73D':'SGG','MDS':'Q7M','ZH3':'GYM','SWB':'C5B','F6V':'3W2','PXP':'QZD','4CR':'2TP','SNV':'CX6','GGD':'6T1','CPF':'S3S','3NQ':'CZ5','57R':'ZSM','MKM':'F5B','64G':'VM8','X33':'4CW','J5D':'DJW','8ZF':'LLW','G6C':'21G','81M':'XGZ','TZH':'XVQ','NPV':'FGQ','DR9':'2HN','7BC':'NSK','278':'KH2','1DD':'GH2','154':'JVM','2DN':'WQ6','DSQ':'JD9','33W':'SJX','7W6':'37N','KTG':'JV3','NWN':'SRG','9J9':'GJQ','46K':'NFF','ZJY':'5HD','Q59':'8T6','T59':'2CT','4XY':'FH7','7XX':'C5B','YBV':'9L6','17R':'CQQ','JDP':'HJ5','4DD':'FTL','MZC':'7KW','P63':'HVV','46M':'7WM','LRV':'39Z','LYP':'PYG','FS8':'DM6','S7X':'KDZ','Y4H':'NVS','573':'37V','83C':'ZS1','Y8G':'9DM','HYT':'M5R','529':'WTK','LC5':'67D','564':'4WF','MKL':'7K6','Q17':'VZN','7XN':'GNP','B86':'JLY','XSK':'8Z7','QBD':'Y8M','XD2':'6NX','JVM':'TX3','62D':'X4N','44Y':'61P','ZWX':'J35','S3S':'7PT','Y6J':'FWW','2BP':'WLN','GLD':'Y1T','CKT':'F8W','S2J':'7LH','XMQ':'BFJ','2XG':'Z7P','886':'Y89','5FW':'5K8','QQL':'JP1','635':'2P1','2HN':'ZDD','CY7':'NH6','1JV':'8Z4','CRZ':'NJC','1RB':'GXB','G2W':'W1F','GF8':'76P','F52':'B8X','HJT':'TM1','P1C':'X6J','WDQ':'1XD','NNH':'4D1','FRL':'TS5','17G':'6LX','QM8':'L5F','RH8':'84Q','72Y':'CTF','39Z':'XGJ','9L6':'W7F','MR9':'QNQ','QQV':'H31','ZFH':'8LY','BZ3':'26H','X5T':'K6Z','9NV':'M4N','WQB':'Y2Q','VWB':'WVZ','HQR':'JB4','2D8':'6VJ','SGZ':'MCN','1DS':'YNG','QHS':'P4Q','BH9':'KBW','M44':'51Y','JWX':'8KG','PKQ':'M81','K54':'VTN','BJH':'4KV','GHC':'DPR','T1P':'SFM','2S6':'JCF','8W1':'1L2','HVM':'XN8','2BH':'GCW','P51':'KNQ','G49':'X9H','S7G':'L19','VB8':'LSC','JHN':'G4S','9RL':'44C','7RD':'PR9','VZ3':'DQC','WST':'8HH','8Z2':'TJM','3QP':'88N','7GR':'5YC','S5J':'V7Y','8LS':'67F','Z5X':'YDY','K1L':'LSB','G3X':'DX1','S3Q':'1MV','NX2':'9YT','CJG':'QM3','28T':'WJY','KWC':'JKJ','CYZ':'H8S','D3L':'LPN','65Y':'MZ4','WPB':'7LK','W9C':'ZNH','NH2':'HR9','22M':'LM4','N76':'L2S','QFR':'V6X','SGG':'S47','XLX':'N2Z','84Q':'6QR','Z7P':'C6P','Q61':'RFS','H5Y':'NX2','ZSM':'G6V','1Z2':'RGX','MZN':'XN8','NMN':'D4Y','V8Z':'K4Q','RH6':'N46','WC8':'F1N','LM4':'D3L','469':'K9Q','72P':'C9C','X6R':'Z78','2N2':'BML','6YY':'SWB','N3J':'P63','47C':'WSH','2QR':'7GR','BC6':'D2T','7BN':'LG4','8BB':'X5X','215':'5YR','TRF':'T59','NC8':'T1P','M9B':'24R','1SX':'ZZ3','PZ2':'H88','CDT':'MR9','9GC':'5CZ','RGX':'7YB','HYH':'RLW','X3Y':'NYK','PYD':'H5Q','TM1':'YXR','BQB':'K4Q','32D':'9VY','8BM':'1P1','J3P':'MHK','FV2':'ZFQ','XFJ':'2MJ','32C':'FC4','HLZ':'SBQ','WN2':'LYK','WZ9':'L23','ZWB':'1BZ','HMJ':'YK1','CWP':'489','HYQ':'VS8','281':'PCP','J94':'F41','KZ1':'QHX','4M5':'69L','62P':'9P1','DQV':'PY2','M27':'BLH','QZD':'3K5','PKC':'Y96','HDS':'QQP','HD1':'TGD','N33':'YQT','TX4':'4HB','K59':'7BC','9ZQ':'P13','67F':'MP3','KN6':'W9C','LW2':'9XM','JV3':'Z89','XGZ':'H3J','TP4':'4KV','NH6':'233','YV8':'GGD','DVH':'3PW','4N7':'V81','4VB':'7X6','ZCL':'N28','4JN':'JLS','F41':'Q59','P9G':'5LN','ZH9':'WDG','GTG':'8BB','JZ7':'S7P','WXX':'YB6','M1S':'VCM','51Y':'FVG','VG8':'CWK','VQ4':'P96','LLW':'GS7','5NV':'313','H5M':'ZPG','GJS':'L2V','N28':'2C3','2S4':'JYN','H3C':'KPC','HV8':'JZ7','3JQ':'88N','THF':'6DD','ZBQ':'MQS','3KD':'1DD','QRT':'L6D','KBK':'L96','KTK':'FS8','6DD':'GHC','N3H':'TJL','W7F':'YR2','TGD':'1Q3','JD9':'P85','CH1':'97P','Z7V':'215','7BF':'PG3','7DM':'JN8','NYK':'S3Q','ZS4':'QTH','N7K':'XDT','4SL':'D6T','227':'S3S','X5R':'2ZW','P8D':'RH8','YZT':'FMQ','PNL':'RTT','1QH':'5P7','8Z7':'KZ1','HRX':'2LS','K7K':'ZG6','3RK':'7LH','V4J':'4N7','L88':'ZYG','GWP':'BXK','KH9':'KVF','L2S':'S2J','241':'Z4Y','FH8':'32C','WSQ':'5BY','HTQ':'THF','SFX':'573','1GQ':'VXY','FCS':'7J9','FCY':'2TF','C3Y':'ZYP','H5Q':'XQ1','313':'ZGD','SFM':'2WF','YNG':'1SX','QNQ':'CNT','3F9':'M65','2TF':'CRL','TS5':'LK4','PWW':'DB6','7JQ':'NPV','WYH':'Q3N','JMJ':'1CK','2ZW':'HY8','HTV':'Z78','V7W':'S5X','Z6F':'B18','VF8':'718','7YJ':'Q7S','1MC':'W73','YPW':'YZX','SGY':'YC8','DPB':'HMJ','2FD':'G8H','5K8':'K59','DQC':'245','FV9':'ZX4','9QK':'HNG','SB2':'SVT','2M8':'JF8','CHJ':'7K7','DCV':'KBV','446':'KDQ','8SL':'VMJ','Y63':'26D','X2R':'9Q9','5XT':'KMC','NKG':'2BH','954':'MH8','7YP':'VJD','D9B':'2QR','Y89':'9PJ','W9Y':'TZ4','TZK':'397','WLN':'ZPR','2ZV':'JNY','4V7':'CVM','NPG':'XWM','8NL':'TZK','PBG':'1YJ','16R':'4CB','88N':'C4C','X6J':'CBH','GWC':'281','965':'Y1J','8YF':'6W4','XN3':'R2L','8ZW':'SP4','PDM':'TML','NFF':'2MQ','V5M':'ZJ4','26H':'CXF','WNM':'XRG','PL5':'7XX','7GJ':'9V5','9PJ':'5NM','GMY':'RQ5','VXG':'BQB','99Q':'154','7WM':'KKN','YOU':'K3P','YZC':'K2R','489':'M3P','CWK':'4XX','D4Y':'LRV','MFD':'HW5','S1H':'YM3','8ZJ':'5DP','YNQ':'TKC','KG7':'KZ1','7J9':'COM','4PS':'LZW','38J':'6TP','KBZ':'3JZ','X9H':'YM4','X1V':'N5Z','1TT':'KR1','TZ4':'B1P','FHX':'G7Y','4CN':'TNN','PK7':'LC5','MP3':'241','K6G':'HQR','BBZ':'PLL','VRG':'FBD','1ZR':'LJ7','YM3':'JCL','9W6':'47F','TML':'7BN','HC8':'HYT','C9C':'Z4W','JH7':'6HC','J35':'Z6X','D8B':'DQ1','D6Y':'RLM','47F':'K73','TH6':'WPB','WLQ':'CJT','L9S':'67D','J44':'Y5X','2FB':'NBQ','Q5R':'TX3','565':'CH1','PSV':'2S4','QHX':'HSY','Y71':'V5R','1XD':'YQT','J5Z':'1DS','MGW':'JH7','WSH':'7SB','56Q':'PX3','H57':'ZPX','6XX':'TP2','M65':'WC8','GJQ':'H1L','FB9':'7JQ','CC2':'X5R','QPX':'GWP','MQS':'FC4','TK9':'8SL','KNC':'PKQ','2LS':'PBN','PJZ':'NT9','HR9':'2FD','CTF':'RZ4','BTP':'HQN','NSK':'4N7','928':'DVK','XWM':'ZPP','LLC':'C57','H3J':'DFV','L17':'92M','B68':'8D7','MC4':'D19','QM1':'C6D','Z1M':'QVD','71B':'DVR','6HD':'17R','74Y':'C1F','41J':'J5Q','9BF':'S5R','G8H':'1YY','F93':'VRK','ZG6':'YQ7','HT1':'L8G','SHP':'BRJ','WX4':'RVV','4DC':'4QM','YR2':'JSV','K31':'YDZ','L6D':'XHS','8T6':'8LV','775':'NVR','SWZ':'5JQ','R5K':'D5G','YP1':'ZFH','K4Q':'CQY','718':'LRD','ZS1':'1DM','12D':'P29','8DK':'WXX','3B7':'L4M','ZZ3':'RZH','S5X':'76J','QQB':'PYD','GCH':'NC8','4QK':'HRX','69L':'GQ4','F1N':'ZHQ','21G':'MRL','1C9':'V62','HY8':'3JQ','1L2':'QKB','ZDD':'WY9','HMF':'CWZ','MZY':'FV9','W7J':'2M8','YBT':'QXC','DJW':'N33','95T':'74Y','YKY':'62P','2MQ':'YP1','3C5':'22M','JS4':'DVJ','4KV':'9NF','L4M':'17G','1P1':'63Y','VBQ':'BC6','PQG':'7CW','WRJ':'6W9','81B':'97Z','3NX':'VPP','KYB':'VNM','BF6':'QCB','1ZD':'CKT','VMD':'2BP','QM3':'ZQD','KN1':'GDV','25Y':'2HD','HZ5':'Y4H','4D1':'KN6','LSC':'PKQ','L86':'JS4','B51':'MX6','3LR':'9MD','LCD':'2VD','GQR':'7RG','4CW':'VB8','3SB':'YLL','GTX':'YBT','Y8S':'B6Z','JLS':'1YB','BTH':'5SL','PL9':'3KD','JFL':'YNQ','VYV':'3T2','62C':'ZWB','39T':'J3N','J1R':'5Z7','D6T':'WYY','RTT':'YX1','6T1':'P94','MH8':'JMJ','ZGD':'1RB','4QM':'7DM','CMY':'QFG','CT1':'7KY','J6D':'X9S','3PW':'PBN','Q7M':'RT5','9YT':'8BM','JWN':'THN','JLY':'DVH','F7R':'N7L','CRL':'GDX','7KW':'C7Z','NM3':'TK9','7K7':'HYG','71T':'QVP','1YH':'DV7','Z6C':'TZV','QK1':'KBL','Y8M':'W7J','JP1':'JNL','L2B':'KR1','21L':'X1K','ZPR':'B26','LZW':'3QP','TNN':'Z1M','THJ':'WHY','ZHN':'YNV','JNY':'LV9','V4Q':'JWS','PBN':'1LZ','HYG':'58F','7PD':'BT7','WQX':'Y8S','2MJ':'Q66','KYK':'769','1JH':'FLH','G35':'FCB','JRL':'VML','Z86':'DGZ','63G':'PWJ','2T6':'3VF','L8G':'HJZ','CJC':'NPG','4N1':'7T4','KPC':'9QK','NHX':'QQL','91S':'L6L','TXS':'81B','KBV':'25Y','H74':'4QQ','NVR':'FB9','VTL':'QN3','P96':'QTH','D9Q':'1C9','F5B':'MFD','9D6':'343','V62':'9GQ','X88':'STM','GQ4':'M9B','CS4':'4V7','3WG':'JFL','6H5':'JPV','C5T':'XJC','W74':'CRZ','BRJ':'XLZ','4FH':'L86','WSR':'1DD','1BZ':'182','FVQ':'DNN','PG1':'9M1','58X':'M9B','J4H':'D6Y','QPQ':'PDM','LF7':'GMY','37V':'YXX','KXL':'4R5','NPB':'FHX','PYM':'CHJ','V5R':'ZWX','ZDW':'9BV','HVV':'D9Y','79C':'TJM','BW5':'PKC','61P':'3T5','1LZ':'W6Q','1SN':'CVB','8QB':'8TV','WK2':'52B','HYC':'886','WJZ':'XTP','PWJ':'6B2','ZLH':'SH2','VS7':'PTZ','8D7':'CMY','67D':'JK9','BXK':'GTG','8Z1':'4RG','J3N':'PNL','VRK':'62C','3QS':'HBR','64K':'ZK2','P59':'S7X','6XD':'QDC','7ZV':'HTQ','Y4B':'Q8R','JMC':'BNK','Z78':'2QR','2G5':'ZH3','1MV':'YSB','KKC':'X58','JTC':'V4J','FLH':'YPW','RZX':'8YF','FFK':'N46','Y4Y':'LSB','B6Z':'L36','RZV':'4PS','STM':'D9K','D9K':'RCJ','V6X':'WYH','3DW':'Y6J','PX3':'2T8','1DN':'2N3','3JX':'64G','7T4':'QBX','HJQ':'3VF','21X':'WK2','6K6':'ZGD','K4V':'G9F','638':'LQH','GLT':'JFF','9XM':'5S4','2HD':'8DK','LG4':'NL3','VRW':'92P','5BY':'BGF','YQT':'3QS','ZPG':'81M','GNP':'YKY','6VJ':'P9G','F22':'FK1','YKL':'64K','397':'PSV','P78':'3LR','6NX':'NM3','RWB':'HD1','963':'R11','B96':'4HK','4QQ':'LNL','2R8':'NMZ','XT2':'MGW','3T5':'9GC','1C1':'8WX','MTB':'G7M','LNM':'Q47','GK3':'BNK','RYF':'SCL','182':'4VB','PY2':'6H5','BBS':'QHX','2TH':'RSX','Y2Q':'GY2','C72':'47C','VHF':'MPF','DWP':'SML','XLZ':'JHN','XDT':'N3J','H3L':'9W6','SP4':'78B','6ST':'TN1','YXL':'9VW','6QR':'D6B','YDZ':'QZC','8HH':'DT6','ZNH':'WNF','44C':'RTT','JNL':'TJR','8TV':'MK7','QFG':'658','RMD':'DWW','QVP':'ZWF','6JH':'9JB','NYG':'JSY','HDJ':'YC6','TJR':'2N2','FCB':'HTK','LKM':'1NP','ZFQ':'QRT','PV7':'91Q','VMJ':'689','ZHQ':'21L','XQ7':'ZTD','CFW':'7GR','4R5':'58X','WDZ':'WGC','2P1':'G2W','LW5':'DQF','C6P':'725','6FJ':'3LZ','TKY':'3JX','SGK':'JL1','7LQ':'JMC','TMD':'5MF','1Y5':'1FP','Q1M':'MXK','DVJ':'DB4','6VS':'BCL','ZQH':'B96','B73':'FLC','F8N':'2R8','B8X':'BBZ','X1K':'88V','6C8':'XSX','RBT':'ZVP','NVJ':'634','DMC':'8Z2','J5Q':'S5J','25F':'D28','9MS':'MZP','W7B':'1JD','N71':'7W6','5YC':'BTP','KH2':'CSR','LZB':'6XD','VJD':'8HT','GLR':'Z7P','3J7':'QHW','NT9':'ZS4','L36':'GDX','WY9':'L9Q','MG2':'BTQ','YZS':'DR9','PHM':'Z6F','BFW':'LYP','PG3':'ZJY','1CK':'PQG','P85':'92Z','KNQ':'M6N','H88':'MMT','M8F':'8S2','3K5':'7LQ','6LX':'2LF','R55':'L3X','QFB':'6ZZ','W9W':'BFW','S47':'62P','K73':'8X2','NMZ':'Y32','XGJ':'34W','93G':'GB9','Y1T':'PNV','7LH':'63V','VM8':'3SD','VZN':'N76','L2V':'DV5','K3M':'N6K','YZG':'4DD','L5F':'16R','GCW':'7BF','KRZ':'ZCL','7KY':'RML','8PK':'RQ4','2T8':'X1V','79F':'3WK','PTZ':'GWC','ZQD':'ZDW','HSY':'3WG','DTS':'RWB','KVN':'C72','C6D':'B48','WP6':'4N1','97P':'6YY','XRG':'XYT','F8C':'GF8','9DM':'XFV','QVT':'1C1','R2L':'WP6','BLH':'SHP','6HG':'J1R','ZS8':'12D','D9S':'4BW','6Q7':'ZGK','GFB':'HYH','233':'7PB','Q3N':'6HD','B84':'4M5','7YB':'NSK','5S4':'NPV','CVB':'4RR','1YB':'QK1','7K6':'XZJ','ZPP':'WWJ','PS3':'LQD','XFV':'33W','KKR':'K6G','658':'CXW','5Y7':'K7C','56G':'MHD','41X':'2CP','HBR':'HLD','NBQ':'92B','R6X':'PWW','6DR':'R55','PM4':'G35','D5S':'VG8','DT6':'QNT','DV7':'6GC','DJ6':'91Q','4G5':'T1M','XVQ':'JFP','CJT':'WDS','NYQ':'JWX','TCR':'NPS','331':'XPC','JPV':'P8D','N55':'Z99','YV7':'THJ','VJN':'JTC','JR9':'ZQQ','5TF':'25Q','WNF':'XD7','MYL':'2TP','XXX':'CFW','KVB':'88Q','TJL':'NT9','7HB':'JR9','H24':'L6Y','WVZ':'4M4','MXK':'TLV','S5D':'4CN','DX1':'R49','8HT':'YD1','X51':'8F1','CBY':'KX9','M6N':'L2Z','9GQ':'KNC','Y9G':'NMG','BCB':'JCB','XX9':'8Z1','5TV':'LCD','B26':'B73','MG3':'XV5','KDQ':'3J7','CSG':'BJH','3JZ':'ZHN','VML':'S5D','DXF':'C9P','9BV':'HJZ','3SD':'46K','FJR':'HV8','N6K':'3F8','9TR':'KHR','DPR':'5TF','QNT':'5K8','BTQ':'3T2','KY3':'25K','K7C':'6CB','C5B':'1SN','RLW':'X87','6GC':'D9S','SML':'C81','SQ6':'8W1','XSR':'K72','C7Z':'6XV','LZN':'5KG','6PZ':'WST','4K1':'W9Y','9VY':'3F4','QMK':'2ZV','Z3P':'RLM','248':'YZV','MZ2':'RBT','JFP':'7CW','LV9':'R5K','QCB':'VZ9','C4W':'L2R','QN3':'VRW','25Q':'72Y','3NY':'ZH9','G4S':'MYL','L19':'HT1','9JB':'XSK','4RG':'X13','BML':'HDS','92B':'7K6','GY2':'V8Z','XQ1':'PKC','RNM':'Q61','6W4':'Z6C','28Q':'CJC','LNL':'ZQH','PJD':'CY7','ZYG':'J6D','WYY':'TCR','5JF':'L2B','8X5':'B6X','4BW':'3Z2','L2Z':'5VG','725':'W9Y','76P':'JQS','VS8':'G6V','DNN':'56V','7RG':'CBY','LFF':'BF6','L6L':'YGL','23P':'XLX','5YR':'KH9','XN8':'KVB','SFK':'YF5','YXX':'NP1','CXW':'3B7','2SK':'6DR','X87':'Y8G','CWZ':'VWG','BT7':'15F','3LJ':'FQP','QHR':'V4Q','N46':'VL3','ZYD':'PGY','RR8':'87K','PR9':'QQV','D6B':'YGJ','9VW':'SFX','6M8':'5V4','G7M':'KH3','VWZ':'B84','H1L':'ZFH','MGL':'VMJ','VCM':'MYD','XDK':'1ZR','YLL':'TC1','FY9':'RQM','F2H':'L8M','WHF':'JM3','68F':'9NV','D9Z':'FND','QPH':'6LH','ZTD':'F8N','N2Z':'6XX','YCF':'4FH','F5R':'WZ9','CNT':'BH9','X4N':'5MQ','FTL':'62D','7HW':'X6R','9BS':'DQV','R8H':'H3J','DQF':'CNT','9P1':'PYM','8WZ':'9F9','KH3':'ZB5','JL2':'2FB','BZT':'PS3','XPC':'YKL','DB6':'Y7Z','JWS':'11D','SH2':'JVD','YC8':'775','7CW':'9NV','MYD':'Q17','KBL':'TH6','NJC':'YKS','5HD':'X51','QM2':'RZX','CQY':'FV2','K2R':'QFB','3F4':'K3M','7PT':'Q5R','BGF':'RH6','JF8':'8PP','58M':'V4Q','4HB':'X88','4HK':'X2R','YSB':'HY2','G7Y':'HJT','YM4':'76J','1YJ':'6Q7','RDH':'FCS','C81':'DR3','HV6':'4Y5','S5R':'TP4','5VG':'5NV','SRG':'H24','63Y':'XD2','LPN':'XYS','L9Q':'J3P','VL3':'CPF','58F':'QPX','T2K':'8ZF','9CP':'9BS','GYM':'HLC','24F':'68F','6VM':'7JQ','NNQ':'2DN','QDC':'1WV','L3X':'L9S','Z6X':'XQ7','DB4':'DG2','QJG':'3F8','YB6':'LKM','SJX':'QFR','YC6':'TST','JGF':'QQB','C57':'7HW','JB4':'9S6','X5X':'Z81','5FX':'7PD','26G':'PH6','B9B':'YCF','V7Y':'PL5','JM3':'CBN','JKJ':'3NQ','JYN':'LLC','82W':'G5Q','44D':'F5R','X9S':'VMD','W1F':'F2H','DVR':'2Y3','B9T':'NYQ','FMQ':'DCV','V4X':'8MY','CZ5':'93G','DHX':'SNV','DFV':'X9H','L6Y':'QFJ','K9Q':'SQ6','TST':'25F','FQP':'WW4','9MD':'ZWH','D5G':'WNM','4CB':'K7L','7LK':'56G','ZVP':'2S4','RQ5':'6VM','D28':'8Z5','RQ4':'G6C','5KF':'GLR','MPF':'Y4Y','L2R':'MC4','L23':'JPV','GPH':'1Y5','WDS':'23P','DR3':'99Q','78B':'7RD','MX6':'JQS','3FK':'VKL','HPL':'P51','4SH':'SGY','MB1':'QRZ','6TM':'P59','MMT':'FH7','1DM':'QHR','XBS':'H3L','1WV':'MGL','92M':'WKF','X22':'R9Z','167':'286','H9C':'7ZV','97Z':'QFR','W73':'MKM','TLV':'LZB','26D':'57Q','FLC':'47F','G7V':'VHF','VTN':'PLL','2WF':'NMN','DVK':'SWZ','NGD':'KBK','ZQQ':'B68','HV2':'BBZ','52B':'814','HQW':'5MG','5CZ':'CDS','JN8':'PL9','GH2':'3C5','RJF':'SBZ','MZ4':'5KF','M6C':'41G','4LC':'HTV','7PB':'H5Y','XV5':'MWH','VKL':'RR8','XD7':'XSR','4ZV':'3DW','2TL':'WHF','P4Q':'4G5','LBT':'VPP','V9D':'KWC','GS7':'888','5V4':'C5T','8Z4':'WKQ','HJZ':'MKL','VPP':'KBX','XYS':'2PT','K3P':'Y71','KHR':'RYF','XJC':'HPN','5P4':'65Y','CT6':'N3H','KGW':'B51','6ZG':'F93','V4H':'9RL','5Q1':'M44','T1M':'JMJ','RQM':'2TL','SBQ':'LF7','ZB5':'227','HW5':'XBS','YKS':'9NZ','85M':'FFK','VWG':'1QH','9F9':'4SH','6C2':'JWN','3T2':'VB8','Y1J':'JL2','RX3':'LYN','LQT':'DQ1','YXW':'NHX','TGP':'WS4','LVD':'4ZV','RMR':'BTP','VKW':'73H','19H':'SB2','2C3':'2G5','LL4':'K31','M9G':'L97','CCC':'K3T','FDM':'PJH','8S2':'CRV','P13':'DMC','4RR':'TGP','QZC':'Y7M','RZH':'8PP','VR2':'KY3','K7L':'646','QQP':'1VR','RT5':'GK3','XZJ':'1DN','D9Y':'5FW','M9C':'HNF','Q41':'X5T','FVG':'LQP','DW1':'MTB','3J6':'LFF','YHV':'8X5','NP1':'G3X','X13':'Z5D','3LZ':'63G','WKF':'6C8','HLC':'5TV','ZX4':'RW7','9NZ':'J4H','1VR':'KBZ','MK7':'4CR','BV7':'LZG','QKB':'B6Z','VXY':'798','11D':'QM2','RSX':'HLD','YZX':'6C2','6LH':'MTB','P94':'GCH','SKG':'3DY','L97':'CV3','YZF':'86B','3KW':'3X8','GXB':'95T','BD7':'44D','M3P':'X4N','C4C':'8ZW','63V':'QPQ','DGZ':'S36','BTF':'BCB','XTP':'2ZW','G6V':'HJQ','XYT':'XW3','S8R':'WSR','TKC':'79C','N7L':'9D6','MCN':'HV6','XR3':'58M','2PT':'JRL','24R':'PHM','SBZ':'2S6','98N':'3F9','MWH':'X22','86B':'V9D','CVM':'54T','L96':'57R','N7Y':'G6N','6WT':'6M8','Q8R':'DLC','LRD':'SN6','FKJ':'9ZQ','GDV':'T2K','697':'9TR','RVG':'YZG','37N':'TZH','YFF':'ZJY','5SL':'SKG','WQ6':'WX4','3VF':'ZHQ','798':'JK9','KX9':'YM3','M4N':'KN6','SY7':'G7V','VNM':'PG1','FH7':'HPL','KVF':'VJN','73H':'28T','CDS':'H74','NMG':'MG3','JFF':'NWN','3Z2':'D9B','6HC':'9TL','9S6':'2HN','9TL':'1MC','1KM':'D6T','NPS':'SP9','D6F':'HVM','634':'VF8','SG6':'NS2','286':'91S','53V':'71T','SAN':'H9C','JL1':'XXX','PNV':'HQW','8MY':'6PZ','3W2':'MB1','YBB':'WQB','MW5':'446','J31':'HZ5','L8M':'8PK','Y5X':'DHX','KBW':'Y4B','JVD':'B86','HY2':'BTH','DQ1':'R6X','G9F':'6GC','689':'KYR','RZD':'HV2','WGC':'775','R11':'TRF','Z4Y':'XFJ','ZWF':'PXP','1FP':'LNM','PFR':'F12','5LN':'4LC','RML':'HMF','XSX':'6DR','NND':'RMD','5MF':'3PY','N7C':'S2J','TSJ':'LQT','ZYP':'697','2CT':'2TH','245':'WWJ','RL2':'T5P','ZWH':'PV7','9GB':'98N','Q6P':'SXJ','9Q9':'GC4','K1X':'9MS','4XX':'73D','M81':'DG2','DWL':'QBD','SVT':'S8R','H8S':'TMD','Y96':'D9Z','LSB':'5Q1','FND':'PJH','GTL':'NKG','T8V':'4XY','K3V':'KXL','TP6':'PBG','5JQ':'Z5X','87K':'JGX','TJM':'K4V','WLC':'XW3','YGL':'HQK','K6N':'J5Z','FBD':'P1C','TC1':'4K1','LK4':'8QB','6ZZ':'Z3P','865':'VYV','FK1':'CT6','8WX':'W7J','WWJ':'P2C','HTK':'RW7','FJ5':'82W','N5Z':'DDY','YD1':'VWZ','4TC':'QQB','8X2':'4SH','JP3':'G24','KDZ':'32D','589':'KN1','JCB':'FH8','QTH':'GV6','TN1':'BTH','LQH':'HC8','QYM':'83C','H31':'H57'};
+            
+            function countOrbits(data) {
+                var cnt = 0;
+                for ( var i in data ) {
+                    for ( var j = i; j in data; j = data[j] ) {
+                        cnt++;
+                    }                                        
+                }
+                
+                return cnt;
+            }
+            function getDist(data, from, to) {
+                var pathFrom = [], pathTo = [];
+                
+                for ( var j = from; j in data; j = data[j] ) {
+                    pathFrom.push(j);
+                }                                        
+                for ( var j = to; j in data; j = data[j] ) {
+                    pathTo.push(j);
+                }
+                
+                while (pathFrom.pop() == pathTo.pop());
+                return pathFrom.length + pathTo.length;
+            }
+            
+            console.log(countOrbits(data));
+            console.log(getDist(data, 'YOU', 'SAN'));
+        }
+        
+        Day6();
+    </script>
+</body>
+</html>
