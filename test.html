@@ -7,36 +7,48 @@
 <body>
     <script>
 		function Intcode(data) {
-			data = data.slice();
+			data = data.map(function(x) {
+                return typeof(x) === "bigint" ? x : BigInt(x);
+            });
 		
-			var dataPos = 0;
+			var dataPos = 0n;
 			var paramModes;
 			var done = false;
 			var output = [];
 			var input = [];
+            var relativeBase = 0n;
 			
 
 			function getParam(n) {
 				switch ( paramModes[n] ) {
-					case 0:
-						return data[data[dataPos+1+n]];
-					case 1:
-						return data[dataPos+1+n];
-					default:
-						throw "Unknown parameter mode " + mode;
-				}
-			}
-			function setParam(n, value) {
-				switch ( paramModes[n] ) {
-					case 0:
-						data[data[dataPos+1+n]] = value;
-						return;
-					case 1:
-						throw "Write to immediate mode!";
+					case 0n:
+						return data[data[dataPos+1n+n]];
+					case 1n:
+						return data[dataPos+1n+n];
+					case 2n:
+						return data[data[dataPos+1n+n]+relativeBase];
 					default:
 						throw "Unknown parameter mode " + paramModes[n];
 				}
 			}
+			function setParam(n, value) {
+                if ( typeof value != 'bigint' ) {
+                    value = BigInt(value);
+                }
+				switch ( paramModes[n] ) {
+					case 0n:
+						data[data[dataPos+1n+n]] = value;
+						return;
+					case 1n:
+						throw "Write to immediate mode!";
+					case 2n:
+						data[data[dataPos+1n+n]+relativeBase] = value;
+						return;
+					default:
+						throw "Unknown parameter mode " + paramModes[n];
+				}
+			}
+            
 			
 			this.pushInput = function(newInput) {
 				if ( Array.isArray(newInput) ) {
@@ -56,55 +68,69 @@
 			
 			this.run = function() {
 				while ( !done ) {
-					var instruction = data[dataPos] % 100;
-					paramModes = [0, 0, 0, 0];
-					for ( var pm = Math.floor(data[dataPos] / 100), j = 0; pm > 0; pm = Math.floor(pm/10), j++ ) {
-						paramModes[j] = pm % 10;
+					var instruction = data[dataPos] % 100n;
+					paramModes = [0n, 0n, 0n, 0n];
+					for ( var pm = data[dataPos] / 100n, j = 0; pm > 0n; pm = pm/10n, j++ ) {
+						paramModes[j] = pm % 10n;
 					}
 				
 					switch ( instruction ) {
-						case 1:
-							setParam(2, getParam(0) + getParam(1)); 
-							dataPos += 4;
+						case 1n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; ${getParam(0n)}+${getParam(1n)}=${getParam(0n)+getParam(1n)}`);
+							setParam(2n, getParam(0n) + getParam(1n)); 
+							dataPos += 4n;
 							break;
-						case 2:
-							setParam(2, getParam(0) * getParam(1)); 
-							dataPos += 4;
+						case 2n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; ${getParam(0n)}*${getParam(1n)}=${getParam(0n)*getParam(1n)}`);
+							setParam(2n, getParam(0n) * getParam(1n)); 
+							dataPos += 4n;
 							break;
-						case 3:
+						case 3n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; input=${input.length ? input[0] : '<undefined>'}`);                        
 							if ( input.length < 1 ) {
 								return false;
 							}
-							setParam(0, input.shift());
-							dataPos+= 2;
+							setParam(0n, input.shift());
+							dataPos+= 2n;
 							break;
-						case 4:
-							output.push(getParam(0));
-							dataPos+= 2;
+						case 4n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; output=${getParam(0n)}`);
+							output.push(getParam(0n));
+							dataPos+= 2n;
 							break;
-						case 5:
-							if ( getParam(0) != 0 ) {
-								dataPos = getParam(1);
+						case 5n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; value=${getParam(0n)} ${getParam(0n) != 0n ? 'Jump to ' + getParam(1n) : 'No jump'}`);                        
+							if ( getParam(0n) != 0n ) {
+								dataPos = getParam(1n);
 							} else {
-								dataPos += 3;
+								dataPos += 3n;
 							}
 							break;
-						case 6:
-							if ( getParam(0) == 0 ) {
-								dataPos = getParam(1);
+						case 6n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; value=${getParam(0n)} ${getParam(0n) == 0n ? 'Jump to ' + getParam(1n) : 'No jump'}`);
+							if ( getParam(0n) == 0n ) {
+								dataPos = getParam(1n);
 							} else {
-								dataPos += 3;
+								dataPos += 3n;
 							}
 							break;
-						case 7:
-							setParam(2, getParam(0) < getParam(1) ? 1 : 0 );
-							dataPos+= 4;
+						case 7n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; ${getParam(0n)} < ${getParam(1n)} = ${getParam(0n) < getParam(1n) ? 1n : 0n}`);                      
+							setParam(2n, getParam(0n) < getParam(1n) ? 1n : 0n );
+							dataPos+= 4n;
 							break;
-						case 8:
-							setParam(2, getParam(0) == getParam(1) ? 1 : 0 );
-							dataPos+= 4;
+						case 8n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; ${getParam(0n)} == ${getParam(1n)} = ${getParam(0n) == getParam(1n) ? 1n : 0n}`);
+							setParam(2n, getParam(0n) == getParam(1n) ? 1n : 0n );
+							dataPos+= 4n;
 							break;
-						case 99:
+                        case 9n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}; ${relativeBase} + ${getParam(0n)} = ${relativeBase + getParam(0n}`);
+                            relativeBase += getParam(0n);
+                            dataPos += 2n;
+                            break;
+						case 99n:
+                            // console.log(`data[${dataPos}]=${data[dataPos]}`);
 							done = true;
 							break;
 						default:
@@ -836,7 +862,26 @@
 			}
 			part2();
 		}
-		Day8();
+		function Day9() {
+            var data = [1102n,34463338n,34463338n,63n,1007n,63n,34463338n,63n,1005n,63n,53n,1101n,3n,0n,1000n,109n,988n,209n,12n,9n,1000n,209n,6n,209n,3n,203n,0n,1008n,1000n,1n,63n,1005n,63n,65n,1008n,1000n,2n,63n,1005n,63n,904n,1008n,1000n,0n,63n,1005n,63n,58n,4n,25n,104n,0n,99n,4n,0n,104n,0n,99n,4n,17n,104n,0n,99n,0n,0n,1101n,0n,708n,1029n,1101n,1n,0n,1021n,1102n,38n,1n,1015n,1101n,25n,0n,1004n,1101n,21n,0n,1018n,1102n,1n,34n,1016n,1101n,0n,713n,1028n,1101n,735n,0n,1024n,1101n,31n,0n,1003n,1102n,1n,24n,1010n,1101n,20n,0n,1011n,1101n,0n,27n,1005n,1102n,726n,1n,1025n,1101n,426n,0n,1027n,1101n,0n,777n,1022n,1102n,1n,32n,1001n,1101n,37n,0n,1009n,1101n,429n,0n,1026n,1102n,1n,36n,1019n,1101n,0n,0n,1020n,1101n,0n,30n,1012n,1101n,0n,770n,1023n,1101n,0n,35n,1014n,1101n,0n,33n,1007n,1102n,23n,1n,1002n,1101n,0n,28n,1017n,1102n,1n,22n,1013n,1102n,39n,1n,1006n,1101n,0n,26n,1000n,1101n,29n,0n,1008n,109n,6n,2102n,1n,-1n,63n,1008n,63n,27n,63n,1005n,63n,203n,4n,187n,1106n,0n,207n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-15n,2108n,26n,9n,63n,1005n,63n,225n,4n,213n,1106n,0n,229n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,9n,21101n,40n,0n,10n,1008n,1010n,40n,63n,1005n,63n,251n,4n,235n,1106n,0n,255n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,11n,21108n,41n,40n,0n,1005n,1011n,271n,1106n,0n,277n,4n,261n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-7n,1207n,3n,32n,63n,1005n,63n,297n,1001n,64n,1n,64n,1105n,1n,299n,4n,283n,1002n,64n,2n,64n,109n,3n,1201n,-1n,0n,63n,1008n,63n,42n,63n,1005n,63n,323n,1001n,64n,1n,64n,1105n,1n,325n,4n,305n,1002n,64n,2n,64n,109n,2n,2102n,1n,-7n,63n,1008n,63n,24n,63n,1005n,63n,345n,1106n,0n,351n,4n,331n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-6n,21107n,42n,43n,8n,1005n,1011n,369n,4n,357n,1106n,0n,373n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-7n,2108n,30n,7n,63n,1005n,63n,393n,1001n,64n,1n,64n,1106n,0n,395n,4n,379n,1002n,64n,2n,64n,109n,18n,21108n,43n,43n,-3n,1005n,1011n,413n,4n,401n,1106n,0n,417n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,17n,2106n,0n,-4n,1105n,1n,435n,4n,423n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-29n,2107n,26n,2n,63n,1005n,63n,451n,1105n,1n,457n,4n,441n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,20n,1206n,-2n,471n,4n,463n,1105n,1n,475n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-9n,1205n,8n,489n,4n,481n,1105n,1n,493n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-12n,1202n,-1n,1n,63n,1008n,63n,26n,63n,1005n,63n,515n,4n,499n,1105n,1n,519n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,25n,1205n,-6n,531n,1106n,0n,537n,4n,525n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-31n,1208n,8n,31n,63n,1005n,63n,555n,4n,543n,1106n,0n,559n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,13n,1207n,1n,38n,63n,1005n,63n,577n,4n,565n,1106n,0n,581n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,4n,21101n,44n,0n,1n,1008n,1013n,47n,63n,1005n,63n,605n,1001n,64n,1n,64n,1106n,0n,607n,4n,587n,1002n,64n,2n,64n,109n,-6n,2107n,38n,0n,63n,1005n,63n,629n,4n,613n,1001n,64n,1n,64n,1106n,0n,629n,1002n,64n,2n,64n,109n,13n,21102n,45n,1n,-7n,1008n,1012n,45n,63n,1005n,63n,655n,4n,635n,1001n,64n,1n,64n,1105n,1n,655n,1002n,64n,2n,64n,109n,9n,1206n,-7n,667n,1106n,0n,673n,4n,661n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-27n,2101n,0n,7n,63n,1008n,63n,29n,63n,1005n,63n,699n,4n,679n,1001n,64n,1n,64n,1106n,0n,699n,1002n,64n,2n,64n,109n,17n,2106n,0n,10n,4n,705n,1106n,0n,717n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,14n,2105n,1n,-8n,4n,723n,1001n,64n,1n,64n,1106n,0n,735n,1002n,64n,2n,64n,109n,-21n,1202n,-8n,1n,63n,1008n,63n,34n,63n,1005n,63n,755n,1105n,1n,761n,4n,741n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,18n,2105n,1n,-6n,1001n,64n,1n,64n,1106n,0n,779n,4n,767n,1002n,64n,2n,64n,109n,-15n,1201n,-6n,0n,63n,1008n,63n,29n,63n,1005n,63n,801n,4n,785n,1105n,1n,805n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-14n,1208n,0n,24n,63n,1005n,63n,825n,1001n,64n,1n,64n,1106n,0n,827n,4n,811n,1002n,64n,2n,64n,109n,15n,21102n,46n,1n,-2n,1008n,1013n,49n,63n,1005n,63n,847n,1106n,0n,853n,4n,833n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,-17n,2101n,0n,2n,63n,1008n,63n,23n,63n,1005n,63n,873n,1106n,0n,879n,4n,859n,1001n,64n,1n,64n,1002n,64n,2n,64n,109n,16n,21107n,47n,46n,2n,1005n,1016n,899n,1001n,64n,1n,64n,1105n,1n,901n,4n,885n,4n,64n,99n,21101n,0n,27n,1n,21101n,0n,915n,0n,1106n,0n,922n,21201n,1n,55486n,1n,204n,1n,99n,109n,3n,1207n,-2n,3n,63n,1005n,63n,964n,21201n,-2n,-1n,1n,21102n,942n,1n,0n,1105n,1n,922n,22102n,1n,1n,-1n,21201n,-2n,-3n,1n,21101n,0n,957n,0n,1105n,1n,922n,22201n,1n,-1n,-2n,1105n,1n,968n,22101n,0n,-2n,-2n,109n,-3n,2106n,0n,0n];
+            
+            function part1() {
+                var pc = new Intcode(data);
+                pc.pushInput(1);
+                pc.run();
+                console.log(pc.popOutput());
+            }
+            function part2() {
+                var pc = new Intcode(data);
+                pc.pushInput(2);
+                pc.run();
+                console.log(pc.popOutput());
+            }
+            
+            part1();
+            part2();
+        }
+        Day7();
     </script>
 </body>
 </html>
