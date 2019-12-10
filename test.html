@@ -1014,7 +1014,7 @@
                 
                 // Same quarter. This also means they're not on an axis or they would obscure each other.
                 
-                return dy2 * dx1 < dy1 * dx2 ? 1 : -1;
+                return dy1 * dx2 - dy2 * dx1;
             }
             
             
