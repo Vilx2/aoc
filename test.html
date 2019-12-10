@@ -881,7 +881,189 @@
             part1();
             part2();
         }
-        Day7();
+        function Day10() {
+            var data = [
+                '##.#..#..###.####...######',
+                '#..#####...###.###..#.###.',
+                '..#.#####....####.#.#...##',
+                '.##..#.#....##..##.#.#....',
+                '#.####...#.###..#.##.#..#.',
+                '..#..#.#######.####...#.##',
+                '#...####.#...#.#####..#.#.',
+                '.#..#.##.#....########..##',
+                '......##.####.#.##....####',
+                '.##.#....#####.####.#.####',
+                '..#.#.#.#....#....##.#....',
+                '....#######..#.##.#.##.###',
+                '###.#######.#..#########..',
+                '###.#.#..#....#..#.##..##.',
+                '#####.#..#.#..###.#.##.###',
+                '.#####.#####....#..###...#',
+                '##.#.......###.##.#.##....',
+                '...#.#.#.###.#.#..##..####',
+                '#....#####.##.###...####.#',
+                '#.##.#.######.##..#####.##',
+                '#.###.##..##.##.#.###..###',
+                '#.####..######...#...#####',
+                '#..#..########.#.#...#..##',
+                '.##..#.####....#..#..#....',
+                '.###.##..#####...###.#.#.#',
+                '.##..######...###..#####.#'
+            ];
+            
+            function parseData(data) {
+                var ret = [];
+                for ( var y = 0; y < data.length; y++ ) {
+                    for ( var x = 0; x < data[y].length; x++ ) {
+                        if ( data[y][x] == '#' ) {
+                            ret.push({x: x, y: y});
+                        }
+                    }
+                }
+                return ret;
+            }
+            
+            
+            function getOverlap(c, p1, p2) {
+                var dx1 = p1.x - c.x;
+                var dy1 = p1.y - c.y;
+                var dx2 = p2.x - c.x;
+                var dy2 = p2.y - c.y;
+                
+                // Return: 0 - not overlap; -1 - overlap with p1 closest; 1 - overlap with p2 closest
+                                
+                if ( dx1 == 0 || dx2 == 0 ) {
+                    // c and p1 or p2 are on the same vertical line.
+                    if ( dx1 != 0 || dx2 != 0 || dy1*dy2 < 0) {
+                        return 0;   // p2 is not on the same line or on the opposite side of center; no overlap.
+                    }
+                    return Math.abs(dy1) > Math.abs(dy2) ? 1 : -1;                    
+                }
+                if ( dy1 == 0 || dy2 == 0 ) {
+                    // c and p1 are on the same horizontal line.
+                    if ( dy1 != 0 || dy2 != 0 || dx1*dx2 < 0) {
+                        return 0;   // p2 is not on the same line or on the opposite side of center; no overlap.
+                    }
+                    return Math.abs(dx1) > Math.abs(dx2) ? 1 : -1;                    
+                }
+                
+                // c, p1 and p2 are not on the same horizontal or vertical line (well, p1 and p2 might be, but that's irrelevant)
+                
+                if ( dx1 * dy2 != dx2 * dy1 || dx1*dx2 < 0 ) {
+                    // all three (c, p1, p2) are not on the same line, or are on the same line but different sides.
+                    return 0;
+                }
+                
+                return Math.abs(dx1) > Math.abs(dx2) ? 1 : -1;
+            }
+            
+            function getQuarter(dx, dy) {
+                // Quarters, laser-wise. Horizontal and vertical axis are also considered "quarters".
+                //
+                //       1
+                //     8 | 2
+                //  7 ---0--- 3
+                //     6 | 4
+                //       5
+
+                if ( dx < 0 ) {
+                    if ( dy < 0 ) {
+                        return 8;
+                    }
+                    if ( dy == 0 ) {
+                        return 7;
+                    }
+                    return 6;
+                } 
+                if ( dx == 0 ) {
+                    if ( dy < 0 ) {
+                        return 1;
+                    }
+                    if ( dy == 0 ) {
+                        return 0;
+                    }
+                    return 5;
+                } 
+                
+                if ( dy < 0 ) {
+                    return 2;
+                }
+                if ( dy == 0 ) {
+                    return 3;
+                }
+                return 4;
+            }
+            
+            function compareAngle(c, p1, p2) {
+                var dx1 = p1.x - c.x;
+                var dy1 = p1.y - c.y;
+                var dx2 = p2.x - c.x;
+                var dy2 = p2.y - c.y;
+                
+                if ( p1 == p2 ) {
+                    return 0;
+                }
+                
+                var q1 = getQuarter(dx1, dy1);
+                var q2 = getQuarter(dx2, dy2);
+                
+
+                if ( q1 != q2 ) {
+                    return q1-q2;
+                }
+                
+                // Same quarter. This also means they're not on an axis or they would obscure each other.
+                
+                return dy2 * dx1 < dy1 * dx2 ? 1 : -1;
+            }
+            
+            
+            var parsed = parseData(data);
+            
+            var bestVisibleCount = 0;
+            var bestVisible = null;
+            var bestC = null;
+            
+            for ( var i = 0; i < parsed.length; i++ ) {
+                var visible = [];
+                
+                for ( var j = 0; j < parsed.length; j++ ) {
+                    if ( i == j ) {
+                        continue;
+                    }
+                    
+                    var shouldAdd = true;
+                    for ( var k = 0; k < visible.length; k++ ) {
+                        var result = getOverlap(parsed[i], visible[k], parsed[j]);
+                        if ( result == 1 ) {
+                            visible[k] = parsed[j];
+                            shouldAdd = false;
+                            break;
+                        }
+                        
+                        if ( result == -1 ) {                                
+                            shouldAdd = false;
+                            break;
+                        }
+                    }
+                    if ( shouldAdd ) {
+                        visible.push(parsed[j]);
+                    }
+                }
+                
+                if ( visible.length > bestVisibleCount ) {
+                    bestVisibleCount = visible.length;
+                    bestVisible = visible;
+                    bestC = parsed[i];
+                }
+            }
+
+            console.log(`Part1: ${bestVisibleCount}`);
+            
+            bestVisible.sort(function(a,b) { return compareAngle(bestC, a, b); });
+            console.log('Part2: ', bestVisible[199]);
+        }
+        Day10();
     </script>
 </body>
 </html>
