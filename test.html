@@ -1147,7 +1147,153 @@
             }
             part2();
         }
-        Day11();
+        function Day12() {
+			var data = [{x:14, y:15, z:-2}, {x:17, y:-3, z:4}, {x:6, y:12, z:-13}, {x:-2, y:10, z:-8}];
+			
+			function part1(data) {
+				var dataCopy = [];
+			
+				for ( var moon of data ) {
+					dataCopy.push({
+						x: moon.x,
+						y: moon.y,
+						z: moon.z,
+						dx: 0,
+						dy: 0,
+						dz: 0
+					});
+				}
+				
+				data = dataCopy;
+			
+				for ( var step = 0; step < 1000; step++ ) {
+					
+					for (var i = 0; i < data.length; i++ ) {
+						for ( var j = i+1; j < data.length; j++ ) {
+							if ( data[i].x > data[j].x ) {
+								data[i].dx--;
+								data[j].dx++;
+							} else if ( data[i].x < data[j].x ) {
+								data[i].dx++;
+								data[j].dx--;
+							}
+							
+							if ( data[i].y > data[j].y ) {
+								data[i].dy--;
+								data[j].dy++;
+							} else if ( data[i].y < data[j].y ) {
+								data[i].dy++;
+								data[j].dy--;
+							}							
+							if ( data[i].z > data[j].z ) {
+								data[i].dz--;
+								data[j].dz++;
+							} else if ( data[i].z < data[j].z ) {
+								data[i].dz++;
+								data[j].dz--;
+							}
+						}
+					}
+					
+					for ( var moon of data ) {
+						moon.x += moon.dx;
+						moon.y += moon.dy;
+						moon.z += moon.dz;
+					}
+				}
+				
+				var total = 0;
+				for ( var moon of data ) {
+					total += (Math.abs(moon.x)+Math.abs(moon.y)+Math.abs(moon.z))*(Math.abs(moon.dx)+Math.abs(moon.dy)+Math.abs(moon.dz));
+				}
+				console.log(total);
+			}
+			
+			function part2(data) {
+				function findCycle(startingPositions) {
+					var data = []; // OK, a bit of a weird data structure, but easier to work with later - [position, velocity, position, velocity, ...]
+					for ( var pos of startingPositions ) {
+						data.push(pos, 0);
+					}
+					
+					var cnt = data.length;
+					var history = new Map();
+					for ( var step = 0; ; step++ )
+					{
+						var name = data.join();
+						if ( step > 1000000 ) { // Safeguard to avoid crashing the browser.
+							return null;
+						}
+						var lastSeen = history.get(name);
+						if ( lastSeen !== undefined ) {
+							return {start: lastSeen, length: step - lastSeen};
+						}
+						history.set(name, step);
+						
+						for (var i = 0; i < cnt; i+=2 ) {
+							for ( var j = i+2; j < cnt; j+=2 ) {
+								if ( data[i] > data[j] ) {
+									data[i+1]--;
+									data[j+1]++;
+								} else if ( data[i] < data[j] ) {
+									data[i+1]++;
+									data[j+1]--;
+								}							
+							}
+						}
+						for (var i = 0; i < cnt; i+=2 ) {
+							data[i] += data[i+1];
+						}
+					}
+				}
+				
+				function gcd(x, y) {
+					if ( x < y ) {
+						var tmp = x;
+						x = y;
+						y = tmp;
+					}
+					
+					while ( true ) {
+						var mod = x % y;
+						if ( mod == 0 ) {
+							return y;
+						}
+						x = y;
+						y = mod;
+					}
+				}
+				function lcd(x,y) {
+					return x*y/gcd(x,y);
+				}
+				
+				var data2 = [];
+				for ( var moon of data ) {
+					data2.push(moon.x);
+				}
+				var xCycle = findCycle(data2);
+				
+				data2 = [];
+				for ( var moon of data ) {
+					data2.push(moon.y);
+				}
+				var yCycle = findCycle(data2);
+				
+				data2 = [];
+				for ( var moon of data ) {
+					data2.push(moon.z);
+				}
+				var zCycle = findCycle(data2);
+				
+				var start = Math.max(xCycle.start, yCycle.start, zCycle.start);
+				var length = lcd(lcd(xCycle.length, yCycle.length), zCycle.length);
+				
+				console.log("First repeat at " + (start+length));
+			}
+			part1(data);			
+			part2(data);			
+		}
+		Day12();
     </script>
 </body>
 </html>
