@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf8"/>
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				padding: 0;
+				background-color: black;
+				color: white;
+				font-family: monospace;
+			}
+			#log {
+				padding: 10px;
+				white-space: pre;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="log"></div>
+		<script>
+			const logEl = document.getElementById("log");
+			function log(text) {
+				if ( typeof(text) !== 'string' ) {
+					text = JSON.stringify(text);
+				}
+				logEl.appendChild(document.createTextNode(text+"\r\n"));
+			}
+			
+			const input = ['LHLRlCCvCLVgHPfCHtVjBGrBDNzWFBsBGBfscGsD', 'nQwbnwwpbrJBrNWB', 'hmnSdSdQpTpdnlPdvddPNglLjH', 'RZhwpDsNqVmQClwl', 'TLJfLTPqcvTrvvLMLMlVzzvVVQQtmQCmtzmV', 'MJjccdfTMcbqjNSRSZsSDZ', 'LLrNNqCTCwLTttwcNctqFGmRBSBjzjbSzbBbjNbzjB', 'GnhhZQPDGdldgQmQSjpzjzQssb', 'gDJZPMnPnhlhJWhZntLCLcTqVMLrGVtMfM', 'rrBgDBGnVnffDnfQQqngJhhSRQvhhCRRRSZbRpRzwQ', 'NtLmcHPHMHHssFJphZpbhwpNRbbC', 'LJPHlmdJDgrrqrnl', 'nJhrcNnfrFwNhPdMQSgZSCMjQn', 'LjqGWsGWllRRlHVsqGGWsZZSSHQgPmHZZSPvdPCmvQ', 'zqqVTWjqBsTJprNbppFb', 'zSMgWzlgFSWFcGZlCZGlrrTc', 'spnQHdQmHddNmpWrpWcChccTWc', 'BsRsnmBQdNWsvRPzbzbLzDVSPSbVLM', 'lDfbffptlrJZTBJHjjBWjT', 'LcwwgQLgzvztwtMQGCMVCHWmnmjWnGhFHnZjmZhjhT', 'sCqtzsswCgccbSqrDSqbNNfN', 'snnnjwRRwGSSnVmhhVMhGFbgQgbzFFPPgQQmPbbgQd', 'qCrccvcDDcvqDZlCcrcfQNQFdsbgWzFfQddQQPgQ', 'ZcrvrBqBTCZnBBswjwpSRs', 'qSczBfBcjMZMfctsmsGmFJsmQQcQCr', 'wPhTLNVNGLNdGHPHwlQsnrnmnrQvHFFHQn', 'dLdwbNLRdgGbgTjZfDbqDWjftSzW', 'rZwlrtRtNtlHqVBtdqQgdq', 'fbwzpPwbhJzpwfTSHgdgqcJVcBjHvHdJ', 'LLPbhzPpTTbTshfGhPwSFWnNmMrrZZmNmZDmWNCCZs', 'tMHgMWMQWgFJTHsWMvJrVdlmvlSvdvlpvG', 'RNfZZfRttBtdlZlmmmplSS', 'DzzNDDRwnwwbLnMFtsMntQFM', 'qHqBMNqgMwHMbnGStHSbndnt', 'PwWZPjpfsDsDsPfPfjdbSvbWhdFSbFGSWFtr', 'wfpjpJcfVsspzZRRszDpwcRggLTQQBLqNqcqcggLCgNmlq', 'TmmFjtvFdDGjdFFJjFRDLNLHGBVcqgLcLgVBLqgV', 'WbWSPSwQCWrWQSrCbwNVlLlBZLBvLlvZVqPl', 'SfwbhrwQQbbMwCwWCrbwJRvptJfjDTDRvzTttRjp', 'jzqSMszqsbVVMVMgWhWCgMrpGgpB', 'wrwLcFQmPlFFlwLZmFGTfPvWGfPvhWWWvGgf', 'wRZtHFHmzNDHSqrs', 'NprlCgrrnrNCjplSCtljpFrFZLzzgwmVgBzBZZPwzBPQBwVL', 'HsDMvHTDfsfQZfZzmPWL', 'JcPsDGTqcTqSdrSCtnCt', 'cFcmfmJFtFmtlTNtLlCWTT', 'QPQzjRRsVsQqBqwlTlNBpLNSWDpN', 'QblgzRPgbgQsVvgPVQhgQqjvMnJfccnZddcGGfrFJMFGGF', 'PWbWmFFnPFPWbDVVmmDHDFGdGhTQdLdnTZQZZcGSGGdQ', 'ClzjNBlBJvlsBdcPLZdLPQjLQZ', 'vJMBpBzzzfNCCzCffJlzgMWDWwPDtVtmVHPMwVHD', 'bJjWzWFlTMjjSNBrRcBrZR', 'mwnwqPwnGQPCqmJmPQJPCVNcRZBRRrrNrmrcVpSrRf', 'PGvQQGPqvhWFWlJbDv', 'PNPrdmPGRJlZCrCJlGQzjRFLpFRppjgppgcj', 'DwfVnssbVnSWShDwsnnhBLFjFgjFBzDBjHDLpHDj', 'vSsMgbsTfTwwfMffnTvgNNCmrPJtCNrJrCrrtvGm', 'cRnRplCzccVcrwcnppVVzRCNhfhgChNJfPgHJdHDNtNCtP', 'WFmbLMZdLBqfJNbPTfttDD', 'BdMWdQsGsSsrpzrswr', 'llhhZzSLqlzwRrffzwzT', 'GvBbNjHbjjTGGHHFcsFvfRrtJQPvtRfwwfrPJD', 'HGbcbTTjHFNpppmLnSdplWqZ', 'FhwFbPwsvtRgVCgvMT', 'HJVHdHBWdBQSSSQnqSQLqZHtcCctppgBtRrgtMCgTprRMM', 'QNzZLVSLLLDGPPzPmbFs', 'VdTHmWCVZDTPBBWBQBFQQg', 'MzjMjzCjJsbJhhPz', 'crfGGLwwLGrtrvCtdTmdDH', 'wRLvLmGQLwFPBRmnLCLmGQTzNNqVNZMMVzzQbzVbNZpMVb', 'jsgJWjdHghsglHtWsjSfHzVNqzfpCCzqDpzDrVVrrD', 'jJtWWsWhtSHsSSgchthHcjHCvcFCRvwvvTTFBGvBmmGLnL', 'LpjWLNqWpwRWMqLRGjwJlStgbtrVgHFrGllDDrVH', 'SQmmTcZZvSZBTmTSzhPTddbVDhHllgFCDHtrDHgDVVDr', 'PzTTvznBncnfTmTTQcPdmzzMqWNfqwRLpWJsNfwLJjsSwJ', 'lsGdGwBsflGrfsHvHwQLdFrmPhDhCFhhjWCVmhDzmbmPhC', 'qtMSNNZZMpcnVzmVbCqjWjzB', 'ZZcgRJpBtTMNnntncwgQQdfGHHHlsQffLH', 'jBBtjjqfnwStBSrVVFwSVVvvWzHmcWvWbvPmPbWrbMRM', 'GTdNDlpJhlCvPbHgcDmgDH', 'JZQdQhNldLdTpGdJGdNCpLZdSBnnBFfHHswqqjffZsqsFjns', 'phJhDPQLDSJvpHhvDJhfrFQVRrnsslrgwrVrrRjg', 'mWNWqZWWZBMdCGMNCdWmWCNCsnVFTRsVnZFlsrlFwFgVsgjr', 'dWdjttGmNCBchJfhHvhPtvJt', 'CSFSFdfCzJhtSCHQFjQHQWFHRNHG', 'wnbrgZnwZgDLsLbwsLrsrNWQNjPZHHvPPQHNqHHvqB', 'LbmTLDsgggQmzmCCppdtSJtM', 'SzSSchCdZgHbwHSZ', 'GsMMmslnsfmNGNNNVVtZWdwbqQbpgWjjgWZjQm', 'DvlMtflGGVGthhzdvLvhrTcc', 'dvfVNqHlQfGRcjDczlCDnC', 'PsPsStLprtTTFSTLmhSVSFSsCzRRjzDnMJDCMWWDjMnMnpjW', 'hBFPhSBFttBhStLwmsPTtPsFHZNGfQgdgdZbdqZwdgNVvwvH', 'rhjcChdgjdCrjLjLLSLmLFMmFtNnnbQNNNPMbbmtQF', 'lwWRZDlsWzrbbQpN', 'rTRqsqDRRRsDRVrqDgBCdCVShjCBHchjdh', 'PsspltlPsmTsmbmfTPSTTCGjhJJjCnpqJJNhhJwNJh', 'BdrLVvgQLQVLHRZGnqRhRNdwNC', 'WrFVHDgDQFHVLVVDFQMLltmPsssPztwsPTzsWcmc', 'CBvvSzFGSGGWfFZpcHqjvjcvcqccJq', 'bRQwgbbhrRhdwmQbWtdjnJHqVJccJqgHVJHJcl', 'RRmbPrNRRPLLtmbQmbNwddCTSTzBSDBDSMFTBSSPZFFW', 'cppsSgNrSgwrGRdHRrwd', 'LzqqmCLCLWQvCzmzZwHnZZHSwvwnlDlS', 'hzFqFLLLFtSNVsFF', 'zpZcZZZdppzDLWDtJGgfGbTGGJTGcc', 'qhvNSClCShRrRBBWTQfgBFbgtfgg', 'HlHqvjqmCvCvlSSHvVdsVDzjpVjMWdwLpP', 'qLdsfNsTHQwnSNSBNS', 'gFhWzrhfbmlpmZhJWrFSvRMnwwvvpBpBSpQBMv', 'rgWZrbmlmbzFfglgWzGggFJLccVPqLPqtPLGcPsPHcPLTd', 'jTTWRCCbwJJNTHrffqNnzh', 'DZVmDpgGBVdcMZnqfhlNHQMlNNhl', 'sDcpsDZBcmgdssZcnmSWCPWRSRwJWwvFLvRwWj', 'hWwhgQlQQgjPhFChZVdbcJ', 'zHsrMPNMtDDTmbcJbccmDb', 'znzPzrtHtHtMzqHHrsSSLwljqfgwGggjlQjQQgQBGj', 'JpnRtqlJsqDJJBBNNmQmgdmRNGGmvv', 'hTCbTwMCwVhTWdmDgDvjWD', 'MDhhMSwZCbbLVhbLcDSwCwZtZznlzlnqBPBpHPPlBlHJ', 'CtvnvqNNDchrhFVpwftmgQgpQfwS', 'MbdqPWGjBjMBbwlfVgdmfSfJJS', 'jWzbzjWWjWMMbRbMsjzBhChrNHcNqHcrNnhssnsc', 'LlLJSWgWllSShRmRlBLJSVBzpTHzTTJcpTHzpTTcPpGpTr', 'MfMqnvbvDfbFFZDfFNjsGrRppHpZGGcGrcPprz', 'wfNFvtwMvbnntftjfNtVmlgmStBmlBWdQQRg', 'GpFRRPGWqzHwdqpzqbjjgfZptBBVMSjSfBZc', 'TClllrnsJvDMBgcjfmtssB', 'NlhNNchrNJlLvClNDrzbGRqwqqqwqPPFLGdd', 'qFmVtvmmVvzzFtzzGzzMNNMSSTjNJlStjSfNgf', 'sWrPBCnCTMsTJfSM', 'QTLbpnRpRppnRQdRzRZqGzFFVVRz', 'WGGPjFvMVNjlcQJr', 'bslfldbgtpSmwmSNHQhLJhcwLcQrQV', 'gTltCsSsssPFnDzWPTMz', 'hhRRhQgGrHjhRsrgqznbzncZjVVJVjncjd', 'DSFfNTBFSDmMSTDlFbBBdccCdJJZCbZCbW', 'DDLmdSmTvQQgsgvGHH', 'dNqNgNvFnvdZHFWnZWNBTQlPTppPGlCTpBQppq', 'LJrtLrsLjsGvTCTpQP', 'mtLhjVjMhhmVMvtJmLfhFWHnngbRRdZHngnZWZ', 'NzdVNzqqCtCHMMZBCGBW', 'psjllRjFpjpbjspFmWmWnLBmMMQMmHbm', 'DhsTPDRTDHpsvRjdNtzJJJdhqwcdqc', 'VbhRbZgRHMFhQpHd', 'fvlqPzmzJJqJSPsWmPTNddNFHbNFGHNTHSbc', 'CqzlfqrCnbrBZjBr', 'SNSrDZFHnTqFsFddsCmsMC', 'ctVthlGjfhGljcCJmcqMCqcqBB', 'VtjvtjhhPPtWqVPLjvqjLVNRppRTvNSnbnZRZTHRnpTD', 'fzsBSsNBMNMszNGGJvgjjPggzjdFPgpJ', 'bmrVVVrmRrrvRmwvqlbHTDgwdLFjQPJPFddwJPFggj', 'HHHrZqhqbTMcZBCZfvcN', 'tzsJsnsmBzlVqjssZZrg', 'MQZHfNCffpMfpGSpPvpfCGCTTVwFTlwrggjSgqFjVjTwwg', 'NfMGGGPZpvLDvLCGGfQHMpZRDRWchRRtBBzmJnmzmnBznb', 'BSRBjtNjZrsjRjjNsVBjbrMwCgGCCwCdHrlcdccGcH', 'DJTTJLpFnFLdJJqPLTWqLTpwHzCGccCzvvcHwMvWzggCMC', 'PmpTTdndmmLqfLTTLDqJVBssbbStVmjjSsZNsBZm', 'ddCnZvCDSgghFhbbmFVQ', 'JzlMcJTMMPPfJJfsMsjWlHVhLbQVlFWmHbbb', 'BPwwsPfsqszfFqppwTsqzpntDSnCBnDRZrSZdnDdtvZD', 'SllzzPplWldwLGlzbtPZZjVScnnNSjnNsqNqsc', 'BrCfFDJFDHBhJCChQFhCCBDcTnNVpZZcNcvQTcjvvcTcZV', 'RCmFHJDJhCmBmRCgDCFRpmGbWWbLPlbMWzzGttzgLMbt', 'vGTfsZnfvfzTjsnfzTJlwqQjwmCqqMFjFFQMlq', 'LHtHRVLRLNtWcmVbRrPbRcwgQwgwMwClwClwrgFpwqpw', 'VDPtbVLBmLbLbDDNnnnzJJfJfBfvSGBn', 'lpPCRVVQppzHlZgzglgF', 'rtfttLdLdscmGtzngPHHFHFH', 'LPLLhfhbTDLmPdcrcWdTcDSjjRqwwbqpRwNBNpBwjQwR', 'dWQfCJrwvQCfFqNwRbbzVbVVLGTR', 'ZpZshPMzBjGjtVMN', 'phpSlSlDlcZpcZPrdHCFzFzFWFDWQH', 'tfMMZhjLlChsdsds', 'PHQRMHRwpRPBMvWvPRBpPdWDslGrbscTlTGcCsGddG', 'FqPSvHPHPBzQRBBwwRJfVtgjzntMntjJLMtJ', 'VBwJvwVwNbVRdPwMgWggGMgH', 'jDhqflDDhrqshNhdgPGHphLg', 'FltsrtcFrclrNqDfqmzQJQQRBzBCvCFvBR', 'RZsSSJDJZLDWnGDMLD', 'ClbnlfmpNtmgbtmMqWdjNGjLQjLqLj', 'gcblTlVCnVmcPrvRPFRrZs', 'mbJcScmbDWLmSBzwjPRTfjmmRhpl', 'tFFFtGttdClHVMCHFMMwTpwNjGpzPpNRRzzpPN', 'gCCdvZCVHsFvJnnDSglSglDn', 'dSndnRRvVSpLSphfqvTgWqrzqvvw', 'PBFQbQbDhGfjTTFzqG', 'tPmCJMtDDNcMVdhhVc', 'QVRVHCQRmdTRqrZFCWrLZNZFbb', 'ncncsPnhslBRSSSbFhtbZDLMbLbtLb', 'lvflPcfPSsPzlJlPlcPBfHJQwRwHmqdVpRGGGdQmww', 'GTCGMCcGdgRnnbbbMLwmMz', 'DQFZzllWDDLwDJLnJpnp', 'qBVrNNlZfFNlWlWqfRzhgvhCqHRdCGGSvc', 'ZnMnGbLZfJcBcLTgWF', 'dHJjdzqssHHNJwCHpHtDccvtBTtvccWWrrTWSg', 'CmlqCNzCzHlmdsqzNzRhMhZRbZMPmRfRJQPb', 'LsLLrFLcFjrtmZhhmhHGhJGGhH', 'ffvbsbWpSBSSCCQbsSBSwwJHHvhZHHGdGVGlMlTVdZlT', 'pSzWNPSfCwWNPBfsFqtFLtsqRzqFgj', 'hwwpvjVppGpwWGLrcPjrbrrdbjdL', 'FBqFFMFHHsHssNHtslqtFmldnnLrPhMnccrnMzZnbLgPLz', 'mJBSstlJQpwGSVhC', 'cgJDVWsrWggpcHhMzwwPnQMWMm', 'SZGBjdBqBBjGjjqNGfGNNHPnRSQFzhnwmnQzQnPHMR', 'bjjCZddjZbZBCtLhCZhftrgJglcTlJgvTllJvDVDLg', 'QpRJpCFdpqTQcqSTBBGBZVjZjVjFvwVB', 'nnnWfnHhPDlDnlLwGjBBbVVZGbCGbP', 'LhhLMLMrMWMrCprTqpJQpz', 'dqGGZJdZbTTMFFTGJFFbMdnCHSdWcmNmcCdWSggfSW', 'QsjjtrzLrQwDPjrQLrCfSSnmCmHWlCgmzlNl', 'PQpQPjQPsBstLBPttDrjBwTZMFMZFvJFJhMhnMJqpTJJ', 'JMLrSvHJdJvvJfrHMJRfWzWDFPwCcWqRRRcq', 'ljZsZTmmtTBlpTlTjQZCtNFPVqDRwWwWWVPcDRVpFRDz', 'mBgQgNNTNvrvJSvgCb', 'DWbWtzWDfDffbsMbZMffDDLncnnCJmLVsJJJnhgcngLs', 'TjgNGSBRTRTQrFRjFGBVLwLnnNncCLLCCcmhPC', 'GgGjvgddvvWqqfdZftWH', 'zMmsQlMfQQMhjsmjfsmHlhncRRZnRRRJRvZWWnhccdRC', 'BptFtDSSrTrpgtgqqgtZtvVVdVvccVnJdVnG', 'qpgPqBLDNTgqBrSLpDBMJfjzmbJMHjLMfjslzH', 'DPgLgPhfNDRqhDFDsBTtrrrdbbztCbtf', 'MjGSScGVGSlJjbbrtTvdzsTq', 'JJwJGWMZwMlWnFFgqNQFpF', 'WRGDHmGqWHlrmtVVVRVqpNZvZvvvTNPMPjbPdM', 'BwhBwsnzwhzSfCfswFvpvTzTdpMpjvPMZNTb', 'LFFQgnbfChSFBhFnftRRLrttDmmRJHtlGH', 'MhqhRHmDdRlRlGnfZbJVsNNZDnNb', 'QwvzgtwvFpmjwzLjFLJZrsZbPfPZbsVpfPsb', 'gvjTzBLztLTjwFjtgLTgtzwdWRqdqRTMSWcWTmWlqdhHHm', 'ZfzzfmhdpNLNBDDsFfQVCDggfV', 'HPFjljSnHrqVDgtgQgQMqC', 'rGnSJHvjSwGzwFhGZG', 'HqmHRDprrNTZTMbh', 'CJvzQRQVQCgNzZbzgMNd', 'vPCvFPcfQFlSJBcfRcPHmDGqWGDqpGtjjtGGHl', 'wcfpJVHfJBffBBGWRprNRWWWNdhv', 'DzMzMPqjDnjgCMZPZjzjCjChGdvvbhNdSvrhNWSNqWRRdS', 'jjCTtnMTDsMBtLRQwwQlFV', 'JqGnVqCTpDVCTnNLgmPzdgjcGmRg', 'HrSBJSHblsJthsBBSBhMsrzmdNRccjLzgcLmjgPPjlLL', 'HSwSttbswWJrbrSWppvVqvvnQVppQQ', 'JDCHssRTTwcRJDcnCDzRHsHNPZGBtPzFPSPttZSZGBqPBZ', 'vWhLmTlfrhFqGWSNQNqF', 'vpMhhpfvmTfhvbLhhgvmgvvlCCJCCMnDnDCnsjRMVDMDswCC', 'ZgjdlmlmmlJgHJlbZrSDrnrMrmLLDFprmp', 'TvqdTtdctvvDrGGSDn', 'CWPBhtWqPPwcdVwlNJfVVNNbbb', 'vgmrrwlPPrwPBPtmvFcMMrsMSJHscJcMSHDH', 'TWdLnZjCLGLMQLHBLS', 'jqVTTZqjdTVjNFNPqBvgvBNl', 'jmcgMzsmjmfvJwFpFfRWZRWp', 'drdSldTmCmTDCNCtbRRWqRwtttFZpZWZqw', 'NLCVLNLTbbTrQNQDvnzschgghnmnHQcH', 'sRVhVQDVDQRRMQhsqtRRNzqzbNzRqNGp', 'WdjCLHLjdFnCCnjnFnLHHmPmNJbztJJpprBpbGzbpJbqGWtB', 'CCFFCnFjdnjCTHmCLTLLCnFnQVhQQVDMhQQVgZZNVVDDsTVh', 'cGLzZgfzcNNzzRZvjvRmVDmmqCCDSdVVChVnDf', 'QstsPlWHQlWhMMtpsbtpQtlpDqBVqPSCSVnTTqmVdDVDVdBV', 'stptQFJrHptlQsFJMHtHhFbvNwvjLGvvNgzgjcwczzJcNJ', 'SQHCrCFPJZcnWrqn', 'vfJvJjfGGDggqZGcWD', 'pjLpRwzhRFtHdMQJ', 'HNSHNDvnvdffDNfqdZfdStcFFMGmmrRBcmFcrMrqrWFB', 'VblwzwhwPLlCGGzgzhmFjbjFrMFrjFBmbcrM', 'hlVPTCCQCCzVlPzhGgPVJCpHtdtSpQSZNNfnZdSSdnSD', 'cBVmfwqwmWggTRmQzTQl', 'CDnnHjSDPLCSCLHLHCHNCDFgwJljFQRRhlglbzJFQQhl', 'GptHLtNGHtCHSnCMtGWdcsqqWwMcqvdsVwfd', 'HsMFNRNWnbWfZLzWzQ', 'PqrpjqNdjjhPcdbpvmfzfbffbzmv', 'GjhhcPjPccVrqcPCldCjssHNnTnNttRwwVMTHMnV', 'jjCcBswcfnwgpPFPwFFGSFSwFb', 'VvmVhVvRRQqttRtQDLzLhqRlrBFMWrGPBSMSZSMFqBWZZP', 'mvQmLRvJtBJVnTcJCjsjsdgp', 'qgqvPbdMDMMPwpbLFGwtNlNF', 'TTQmdJTnSllFGtJNtw', 'CSSHmQHfmVcHjQmSvPBdBDDWMVhMhRMB', 'WCvQNZdhCDnnPfQPfTzjHcppsHjpsSjHNS', 'mFMgMBlMmBqHjjBfTjHzBc', 'grJbrqfqMVFJrlJrtCtvhPPQdnvnnvnwdW', 'FdQQJRdfSSfrJsRZfFsRSvtDBmDHGtGqbgvnmbDnvDGq', 'lcMzjCPTVtMqgWWGqn', 'VpLjcVPczhzznPLcPhTwFQFRZNfFNrNZFpZNsZJR', 'VWgJhmdDdJDdVPggPSTSTWvvfRzfFfFbNb', 'jCQtnpGQrHMctnpzRbFfgSwHvgwfwv', 'ntcMcqLMcQccQLgjBPLdhZDVlJPVdDLJ', 'RnPnwtqHnJthjLMcWWncMn', 'msdCrCdNpBBsCrlNTpNBDNGzcLchQjFQzccQLQpzLzWtFS', 'sTbdTBNrTCTTBCNBlVbwgVPJHtPgPvqgff', 'QmBsmpmcZQNqPqVnPFVpGh', 'gDDMDLMJgHfJwJMzfTfdGLhChPtvnGRPRRLFGPGv', 'DTlzgwfDrrrMWlncbscNnlSW', 'tBwvGHFttrFrvRgRhCmCmwQmMg', 'JWbNJZjzfbVjWjBhqfmSnhqCqgnQ', 'ZZJJJbclzJcsTPdvTTPTBFtHDF', 'LszmFTFpTmszLrpqSmFpzcvQjtQjvLJgJtcBjgtJjj', 'VHNwwNCVCChddfwHlWdnlnGRQPcQjRvMWBJJtMMWcvPJMM', 'nGHNVHhnfnHDNhCfdhNNlwHvmpDrZDmpzmbZSZFsmmbqrrsz'];
+			
+			const priorities = new Map([['a',1],['b',2], ['c',3], ['d',4], ['e',5], ['f',6], ['g',7], ['h',8], ['i',9], ['j',10], ['k',11], ['l',12], ['m',13], ['n',14], ['o',15], ['p',16], ['q',17], ['r',18], ['s',19], ['t',20], ['u',21], ['v',22], ['w',23], ['x',24], ['y',25], ['z',26], ['A',27], ['B',28], ['C',29], ['D',30], ['E',31], ['F',32], ['G',33], ['H',34], ['I',35], ['J',36], ['K',37], ['L',38], ['M',39], ['N',40], ['O',41], ['P',42], ['Q',43], ['R',44], ['S',45], ['T',46], ['U',47], ['V',48], ['W',49], ['X',50], ['Y',51], ['Z',52]]);
+			
+			
+			log(input.reduce((acc, str) => {
+				const len = str.length / 2;
+				const strA = str.substring(0, len);
+				const strB = str.substring(len);
+				const setA = new Set();
+				
+				for ( let i = 0; i < len; i++ ) {
+					setA.add(strA[i]);					
+				}
+				
+				for ( let i = 0; i < len; i++ ) {
+					if ( setA.has(strB[i]) ) {
+						return acc + priorities.get(strB[i]);
+					}
+				}
+			}, 0));
+			
+			
+			const input2 = [];
+			for ( let i = 0; i < input.length; i+= 3 ) {
+				input2.push([input[i], input[i+1], input[i+2]]);
+			}
+			
+			log(input2.reduce((acc, str) => {
+				const setA = new Set();
+				const setB = new Set();
+				
+				for ( let i = 0; i < str[0].length; i++ ) {
+					setA.add(str[0][i]);					
+				}
+				
+				for ( let i = 0; i < str[1].length; i++ ) {
+					if ( setA.has(str[1][i]) ) {
+						setB.add(str[1][i]);
+					}
+				}
+				
+				for ( let i = 0; i < str[2].length; i++ ) {
+					if ( setB.has(str[2][i]) ) {
+						return acc + priorities.get(str[2][i]);
+					}
+				}				
+			}, 0));			
+			
+		</script>	
+	</body>
+</html>

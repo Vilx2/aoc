@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf8"/>
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				padding: 0;
+				background-color: black;
+				color: white;
+				font-family: monospace;
+			}
+			#log {
+				padding: 10px;
+				white-space: pre;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="log"></div>
+		<script>
+			const logEl = document.getElementById("log");
+			function log(text) {
+				if ( typeof(text) !== 'string' ) {
+					text = JSON.stringify(text);
+				}
+				logEl.appendChild(document.createTextNode(text+"\r\n"));
+			}
+			
+			const input = ['addx 1','addx 4','addx -2','addx 3','addx 3','addx 1','noop','addx 5','noop','noop','noop','addx 5','addx 2','addx 3','noop','addx 2','addx 4','noop','addx -1','noop','addx 3','addx -10','addx -17','noop','addx -3','addx 2','addx 25','addx -24','addx 2','addx 5','addx 2','addx 3','noop','addx 2','addx 14','addx -9','noop','addx 5','noop','noop','addx -2','addx 5','addx 2','addx -5','noop','noop','addx -19','addx -11','addx 5','addx 3','noop','addx 2','addx 3','addx -2','addx 2','noop','addx 3','addx 4','noop','noop','addx 5','noop','noop','noop','addx 5','addx -3','addx 8','noop','addx -15','noop','addx -12','addx -9','noop','addx 6','addx 7','addx -6','addx 4','noop','noop','noop','addx 4','addx 1','addx 5','addx -11','addx 29','addx -15','noop','addx -12','addx 17','addx 7','noop','noop','addx -32','addx 3','addx -8','addx 7','noop','addx -2','addx 5','addx 2','addx 6','addx -8','addx 5','addx 2','addx 5','addx 17','addx -12','addx -2','noop','noop','addx 7','addx 9','addx -8','addx 2','addx -33','addx -1','addx 2','noop','addx 26','addx -22','addx 19','addx -16','addx 8','addx -1','addx 3','addx -2','addx 2','addx -17','addx 24','addx 1','noop','addx 5','addx -1','noop','addx 5','noop','noop','addx 1','noop','noop'];
+			
+			let x = 1;
+			let cycle = 0;
+			let p = 0;
+			let cooldown = 0;
+			
+			function getCooldown(str) {
+				if ( str.startsWith('addx') ) {
+					return 1;
+				}
+				return 0;
+			}
+			function exec(str) {
+				if ( str.startsWith('addx') ) {
+					x += parseInt(str.substring(5));
+				}
+				p++;
+			}
+			
+			let answer1 = 0;
+			let answer2 = [];
+			
+			while (p < input.length) {
+				cycle++;
+				if ( cycle == 20 || cycle == 60 || cycle == 100 || cycle == 140 || cycle == 180 || cycle == 220 ) {
+					answer1 += cycle * x;
+				}
+								
+				const cycle0 = cycle - 1;
+				const crtX = cycle0 % 40;
+				const crtY = (cycle0 - crtX) / 40;
+				if ( answer2[crtY] === undefined ) {
+					answer2[crtY] = [];
+				}
+				answer2[crtY][crtX] = (x == crtX - 1) || (x == crtX) || (x == crtX + 1) ? '#' : ' ';
+				
+				if ( cooldown > 0 ) {
+					cooldown--;
+					if ( cooldown == 0 ) {
+						exec(input[p]);
+					}
+				} else {
+					cooldown = getCooldown(input[p]);
+					if( cooldown == 0 ) {
+						exec(input[p]);
+					}
+				}
+			}
+			log(answer1);
+			for ( const line of answer2 ) {
+				log(line.join(''));
+			}
+			
+		</script>	
+	</body>
+</html>

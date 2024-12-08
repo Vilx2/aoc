@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf8"/>
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				padding: 0;
+				background-color: black;
+				color: white;
+				font-family: monospace;
+			}
+			#log {
+				padding: 10px;
+				white-space: pre;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="log"></div>
+		<script>
+			const logEl = document.getElementById("log");
+			function log(text) {
+				if ( typeof(text) !== 'string' ) {
+					text = JSON.stringify(text);
+				}
+				logEl.appendChild(document.createTextNode(text+"\r\n"));
+			}
+			
+			const input=
+[
+	[[2,0,0], [4,0,0], [4,15,0], [2,0,20]],
+	[[4,0,0], [4,0,0], [4,20,0], [2,0,8]],
+	[[4,0,0], [4,0,0], [3,14,0], [4,0,8]],
+	[[4,0,0], [3,0,0], [3,15,0], [2,0,13]],
+	[[2,0,0], [4,0,0], [4,20,0], [4,0,18]],
+	[[4,0,0], [4,0,0], [4,17,0], [2,0,13]],
+	[[4,0,0], [4,0,0], [4,12,0], [4,0,19]],
+	[[3,0,0], [4,0,0], [2,15,0], [2,0,13]],
+	[[3,0,0], [3,0,0], [2,9,0], [2,0,9]],
+	[[3,0,0], [3,0,0], [2,12,0], [2,0,10]],
+	[[3,0,0], [4,0,0], [4,10,0], [2,0,13]],
+	[[3,0,0], [4,0,0], [4,6,0], [3,0,16]],
+	[[4,0,0], [3,0,0], [4,5,0], [3,0,19]],
+	[[3,0,0], [4,0,0], [4,20,0], [4,0,16]],
+	[[4,0,0], [4,0,0], [4,8,0], [2,0,18]],
+	[[4,0,0], [3,0,0], [2,10,0], [4,0,10]],
+	[[2,0,0], [2,0,0], [2,17,0], [2,0,10]],
+	[[2,0,0], [3,0,0], [3,11,0], [3,0,14]],
+	[[4,0,0], [3,0,0], [2,13,0], [2,0,10]],
+	[[4,0,0], [4,0,0], [4,5,0], [2,0,10]],
+	[[4,0,0], [4,0,0], [3,14,0], [4,0,15]],
+	[[4,0,0], [3,0,0], [4,20,0], [2,0,15]],
+	[[4,0,0], [3,0,0], [2,5,0], [2,0,10]],
+	[[3,0,0], [4,0,0], [4,5,0], [4,0,8]],
+	[[2,0,0], [3,0,0], [3,17,0], [3,0,10]],
+	[[3,0,0], [4,0,0], [4,6,0], [2,0,20]],
+	[[4,0,0], [4,0,0], [4,5,0], [3,0,15]],
+	[[4,0,0], [4,0,0], [4,17,0], [4,0,20]],
+	[[4,0,0], [4,0,0], [2,14,0], [3,0,17]],
+	[[2,0,0], [3,0,0], [3,9,0], [3,0,9]],
+];
+			
+			//const input = [[[4,0,0],[2,0,0],[3,14,0],[2,0,7]]];
+			//const input = [[[2,0,0],[3,0,0],[3,8,0],[3,0,12]]];
+			
+			//const input = [[[4,0,0],[2,0,0],[3,14,0],[2,0,7]], [[2,0,0],[3,0,0],[3,8,0],[3,0,12]]];
+			
+			
+			let resources = [0, 0, 0, 0];
+			let bots = [1, 0, 0, 0];
+			
+			for ( let recipe of input ) {
+				recipe.cap = [
+					Math.max(recipe[0][0], recipe[1][0], recipe[2][0], recipe[3][0]),
+					Math.max(recipe[0][1], recipe[1][1], recipe[2][1], recipe[3][1]),
+					Math.max(recipe[0][2], recipe[1][2], recipe[2][2], recipe[3][2]),
+					9999
+				];
+			}
+			
+			let pass = 0;
+			
+			function processTurn(recipe, minutesLeft) {
+				if ( pass >= 10000000 ) {
+					log('Yeah... nope...');
+					return -1;
+				}
+				pass++;
+				//log({minutesLeft, resources, bots, recipe});
+			
+				if ( minutesLeft == 1 ) {
+					return resources[3] + bots[3];
+				}
+			
+				resources[0] += bots[0];
+				resources[1] += bots[1];
+				resources[2] += bots[2];
+				resources[3] += bots[3];
+				let bestCount = processTurn(recipe, minutesLeft-1);				
+				
+				for ( let i = 0; i < 4; i++ ) {
+					if ( bots[i] >= recipe.cap[i] ) {
+						continue;
+					}
+				
+					if ( recipe[i][0] <= (resources[0] - bots[0]) && recipe[i][1] <= (resources[1] - bots[1]) && recipe[i][2] <= (resources[2] - bots[2]) ) {
+						bots[i]++;
+						resources[0] -= recipe[i][0];
+						resources[1] -= recipe[i][1];
+						resources[2] -= recipe[i][2];
+						const candidate = processTurn(recipe, minutesLeft-1);
+						if ( candidate > bestCount ) {
+							bestCount = candidate;
+						}
+						resources[0] += recipe[i][0];
+						resources[1] += recipe[i][1];
+						resources[2] += recipe[i][2];
+						bots[i]--;
+					}
+				}
+				resources[0] -= bots[0];
+				resources[1] -= bots[1];
+				resources[2] -= bots[2];
+				resources[3] -= bots[3];
+				
+				return bestCount;
+			}
+			function processTurnGreedy(recipe, minutesLeft) {
+				let resources = [0, 0, 0, 0];
+				let bots = [1, 0, 0, 0];
+			
+				for ( let j = 0; j < minutesLeft; j++ ) {
+					for ( let i = 3; i >= 0; i-- ) {
+						if ( bots[i] >= recipe.cap[i] ) {
+							continue;
+						}
+					
+						if ( recipe[i][0] <= resources[0] && recipe[i][1] <= resources[1] && recipe[i][2] <= resources[2] ) {
+							bots[i]++;
+							resources[0] -= recipe[i][0];
+							resources[1] -= recipe[i][1];
+							resources[2] -= recipe[i][2];
+							resources[i]--;
+							break;
+						}
+					}
+					
+					resources[0] += bots[0];
+					resources[1] += bots[1];
+					resources[2] += bots[2];
+					resources[3] += bots[3];
+					log({minutesLeft, resources, bots, recipe});
+				}				
+				return resources[3];
+			}
+			function processTurnSwitched(recipe, minutesLeft, pad) {
+				/*pass++;
+				if ( pass > 1000) {
+					return -1;
+				}*/
+				// log(pad + JSON.stringify({minutesLeft, resources, bots, recipe}));
+				
+				let mostGeodes = minutesLeft * bots[3] + resources[3];
+				
+				for ( let targetBot = 0; targetBot < 4; targetBot++ ) {
+					if ( bots[targetBot] >= recipe.cap[targetBot] ) {
+						continue;
+					}
+					if (recipe[targetBot][1] > 0 && bots[1] == 0 ) {
+						continue;
+					}
+					if (recipe[targetBot][2] > 0 && bots[2] == 0 ) {
+						continue;
+					}
+					
+					let turnsNeeded = Math.max(
+						0,
+						Math.ceil((recipe[targetBot][0] - resources[0])/bots[0]),
+						recipe[targetBot][1] == 0 ? 0 : Math.ceil((recipe[targetBot][1] - resources[1])/bots[1]),
+						recipe[targetBot][2] == 0 ? 0 : Math.ceil((recipe[targetBot][2] - resources[2])/bots[2])
+					) + 1;
+						
+					if ( turnsNeeded >= minutesLeft ) {
+						continue;
+					}
+					
+					resources[0] += bots[0] * turnsNeeded - recipe[targetBot][0];
+					resources[1] += bots[1] * turnsNeeded - recipe[targetBot][1];
+					resources[2] += bots[2] * turnsNeeded - recipe[targetBot][2];
+					resources[3] += bots[3] * turnsNeeded;
+					bots[targetBot]++;
+					
+					// log(`${pad}Try ${targetBot}`);
+					const candidate = processTurnSwitched(recipe, minutesLeft - turnsNeeded, pad + '  ');
+					// log(`${pad}Done try ${targetBot}`);
+					if ( candidate > mostGeodes ) {
+						mostGeodes = candidate;
+					}
+					
+					bots[targetBot]--;
+					resources[0] -= bots[0] * turnsNeeded - recipe[targetBot][0];
+					resources[1] -= bots[1] * turnsNeeded - recipe[targetBot][1];
+					resources[2] -= bots[2] * turnsNeeded - recipe[targetBot][2]
+					resources[3] -= bots[3] * turnsNeeded;
+				}
+				
+				return mostGeodes;				
+			}
+			
+			
+			let answer1 = 0;
+			for ( let i = 0; i < input.length; i++ )
+			{
+				answer1 += processTurnSwitched(input[i], 24, '') * (i+1);				
+			}
+			log(answer1);
+			
+			let answer2 = 1;
+			for ( let i = 0; i < 3; i++ )
+			{
+				answer2 *= processTurnSwitched(input[i], 32, '');
+			}
+			log(answer2);
+			
+		</script>	
+	</body>
+</html>

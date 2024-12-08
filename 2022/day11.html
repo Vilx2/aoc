@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf8"/>
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				padding: 0;
+				background-color: black;
+				color: white;
+				font-family: monospace;
+			}
+			#log {
+				padding: 10px;
+				white-space: pre;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="log"></div>
+		<script>
+			const logEl = document.getElementById("log");
+			function log(text) {
+				if ( typeof(text) !== 'string' ) {
+					text = JSON.stringify(text);
+				}
+				logEl.appendChild(document.createTextNode(text+"\r\n"));
+			}
+			
+			const input = [
+				{
+					items:[78, 53, 89, 51, 52, 59, 58, 85],
+					operation:(x)=>x * 3,
+					divisor: 5,
+					trueTarget: 2,
+					falseTarget: 7,
+					inspections: 0
+				}, {
+					items:[64],
+					operation:(x)=>x + 7,
+					divisor: 2,
+					trueTarget: 3,
+					falseTarget: 6,
+					inspections: 0
+				}, {
+					items:[71, 93, 65, 82],
+					operation:(x)=>x + 5,
+					divisor: 13,
+					trueTarget: 5,
+					falseTarget: 4,
+					inspections: 0
+				}, {
+					items:[67, 73, 95, 75, 56, 74],
+					operation:(x)=>x + 8,
+					divisor: 19,
+					trueTarget: 6,
+					falseTarget: 0,
+					inspections: 0
+				}, {
+					items:[85, 91, 90],
+					operation:(x)=>x + 4,
+					divisor: 11,
+					trueTarget: 3,
+					falseTarget: 1,
+					inspections: 0
+				}, {
+					items:[67, 96, 69, 55, 70, 83, 62],
+					operation:(x)=>x * 2,
+					divisor: 3,
+					trueTarget: 4,
+					falseTarget: 1,
+					inspections: 0
+				}, {
+					items:[53, 86, 98, 70, 64],
+					operation:(x)=>x + 6,
+					divisor: 7,
+					trueTarget: 7,
+					falseTarget: 0,
+					inspections: 0
+				}, {
+					items:[88, 64],
+					operation:(x)=>x * x,
+					divisor: 17,
+					trueTarget: 2,
+					falseTarget: 5,
+					inspections: 0
+				}
+			];
+			
+			for ( let i = 0; i < 20; i++ ) {
+				for ( let monkey of input ) {
+					for ( let item of monkey.items ) {
+						const newValue = Math.floor(monkey.operation(item)/3);
+						if ( (newValue % monkey.divisor) == 0 ) {
+							input[monkey.trueTarget].items.push(newValue);
+						} else {
+							input[monkey.falseTarget].items.push(newValue);
+						}
+					}
+					monkey.inspections += monkey.items.length;
+					monkey.items.length = 0;
+				}
+			}
+			
+			const business = input.map((x)=>x.inspections).sort((a,b)=>b-a);
+			log(business[0]*business[1]);
+			
+			
+			const input2 = [
+				{
+					items:[78, 53, 89, 51, 52, 59, 58, 85],
+					operation:(x)=>x * 3,
+					divisor: 5,
+					trueTarget: 2,
+					falseTarget: 7,
+					inspections: 0
+				}, {
+					items:[64],
+					operation:(x)=>x + 7,
+					divisor: 2,
+					trueTarget: 3,
+					falseTarget: 6,
+					inspections: 0
+				}, {
+					items:[71, 93, 65, 82],
+					operation:(x)=>x + 5,
+					divisor: 13,
+					trueTarget: 5,
+					falseTarget: 4,
+					inspections: 0
+				}, {
+					items:[67, 73, 95, 75, 56, 74],
+					operation:(x)=>x + 8,
+					divisor: 19,
+					trueTarget: 6,
+					falseTarget: 0,
+					inspections: 0
+				}, {
+					items:[85, 91, 90],
+					operation:(x)=>x + 4,
+					divisor: 11,
+					trueTarget: 3,
+					falseTarget: 1,
+					inspections: 0
+				}, {
+					items:[67, 96, 69, 55, 70, 83, 62],
+					operation:(x)=>x * 2,
+					divisor: 3,
+					trueTarget: 4,
+					falseTarget: 1,
+					inspections: 0
+				}, {
+					items:[53, 86, 98, 70, 64],
+					operation:(x)=>x + 6,
+					divisor: 7,
+					trueTarget: 7,
+					falseTarget: 0,
+					inspections: 0
+				}, {
+					items:[88, 64],
+					operation:(x)=>x * x,
+					divisor: 17,
+					trueTarget: 2,
+					falseTarget: 5,
+					inspections: 0
+				}
+			];
+			
+			const superDivisor = 2*3*5*7*11*13*17*19;
+			for ( let i = 0; i < 10000; i++ ) {
+				for ( let monkey of input2 ) {
+					for ( let item of monkey.items ) {
+						const newValue = monkey.operation(item) % superDivisor;
+						if ( (newValue % monkey.divisor) == 0 ) {
+							input2[monkey.trueTarget].items.push(newValue);
+						} else {
+							input2[monkey.falseTarget].items.push(newValue);
+						}
+					}
+					monkey.inspections += monkey.items.length;
+					monkey.items.length = 0;
+				}
+			}
+			
+			const business2 = input2.map((x)=>x.inspections).sort((a,b)=>b-a);
+			log(business2[0]*business2[1]);
+		</script>	
+	</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf8"/>
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				padding: 0;
+				background-color: black;
+				color: white;
+				font-family: monospace;
+			}
+			#log {
+				padding: 10px;
+				white-space: pre;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="log"></div>
+		<script>
+			const logEl = document.getElementById("log");
+			function log(text) {
+				if ( typeof(text) !== 'string' ) {
+					text = JSON.stringify(text);
+				}
+				logEl.appendChild(document.createTextNode(text+"\r\n"));
+			}
+			
+			const input_prod = [
+				'<^.>v<.vv.><<<v<vv<v^>^^v<>.^>.^v^>vv^^^><<^..>^^^>><.^>^v<v<<>.>.><.vv<^>v^<v^<v^v^><^vv^>^>^v><<v>^.^>v^v^^<..v>^..v^<',
+				'>^v>v^vvv^><v.v<v<.v<>^v^v.v<v..^<^<.^<^vv<><<<>.^v.v.<<^<v^^^<.<^<^v.vvv^vv.>v^>^v<>^vv^^<<v<.^<<>v>^>>vv<<v><^vvvv>^v>',
+				'>v^..vv><^v^^^><><^>>^<v.^.v^^^v^^<>v^v<<^><v<<v.v^^^>vv<><>v^<>^v>.vv^v<>>^<<v^.v<v^^<..>^v>^^v>^<^>^v>vv.>>v^.><>^.>v<',
+				'.>>.vv<.<<^v<^<<^^^><^<<^>v^v<><<v<><v>>^^<>vv>^>^vvvv^.>....>.v<^^^v^>.<^v.<vvv>v^>><>>><>.v.v^<v>^<^<v>>vv<vvvv>v<.<>>',
+				'<^<v>v<<v<<>v>v^<.^<v.^v^v>v<<v<><>.^.^.v>^^^<^<v.v.>>><<<^v<>>><v>^<^vv>><.><v<v<>^..vv>^v^v.v<v..<^v><>..<.<>^vvvv>v<<',
+				'<v>>><vvv>.>>^vv^<>>vv^<.<..<v>>>^>v>>^.^<.^..><<^v<.<<<<v.<^^^.<>^>><.^v^v.<><<^<><<v><^^.><v>^<^.^<>>>^<<<<<<>><^.vv^<',
+				'>v^>.v><><^><>>.<<^vvv^v^^..vv>><<^>^^<^v.><^v<^><<>>><>^^v<<.^.^<<v>^>.>.>><>^^><^^<^>^..v..<^^<>v^.>>>>^v<v>.<.^<^<<v<',
+				'<v.>v^<..vv^vv>>^<^>>v<<>><vv..<<<<v.v^>^v><^><v^><<>v>^>v.v>v.>v^<><^>>vv<>.>^^<<>.><>v>v.^v>^vv>v^.v>><v<^vv<<<v^><><>',
+				'<v^<.^^^^<<.^^^.<^.<v<<^vv.><^<<<v<<v<<>^^<<.<vvv><v>>.>>>^><.>^<>^<>^>^v^vvv>^^>v^>v>>.<v<<v><>v>v^^<v<v^<^>v.>><v^><>.',
+				'>.^..<<v>^><.^<<^^<>^v<.^<^>>v<^>^>>^<<^^><^><v><.>><<v>^v^.v^^^vv<<^<vv^>^>v^v<<v^v<<.v><vvv><<^<v.>>v.>v.v<.^v><>^<^<>',
+				'.v.<^v>>^<vv^>^.><<v^>.>v>^>>><<v>v<<^^>.^>v><>v<^v^.>>^>>^><<>^><>.^^<>^<><^v^><^^>v<^.<<.v>>^.v^^<^.<^.<^.>^<<>.^<>..>',
+				'.v>v>^^<^><><><v><.<>v>^.^.v<^>.v^v<v><vv.>>^>.v<v^><<>^v^.^v>v>^><>vv><<v><<v<>^^v^v<>vv>><<>vv<>^.<<.>v>v<<v>v<>><^vv<',
+				'>.^.v>^^.<<vv<^<^<>^v>v^v>>.<<^vv.<<>^^^<^^^<>v..<v>^>^<><^v><><>..vv<^.<>^^>vv^^<.<<><^v^><vv^>>vv.v>>^^<^<>vv><^<^^>><',
+				'<^.^>>.^.v>>v>.<v><>^vv<><<><<<<v<^v>v^vv>.<<<v<<>^><<>^^<>^>^>vv<<v<><^^>^<>v<v^^v>^v.vv<>v<>^<v<<^v^<>>^v<^v.>^^>.>>v.',
+				'<>>.^^><vv<vv^<>>^><>><^vv><^>^<<>vv><>><>^<^v^^^>>v<.vv>v^^.^vv<^^^<^>v<>>>vv>^v.<<>>>^>vv<<^<<<v<<^<<>^^v.v^v^<^<<><v<',
+				'<.<>v<^^<<>v>v^v>v>v..><>><^>><<v>.v<<>vv.^^<^^v^^^<.v.>.<.<>v^v^v^><<><^^>.>^^><><^^>.>.><^<^^<<v<.^^<vv>^><>>.>v^^^^v<',
+				'>^^<v>v>>v>^^><<^^^<v^<<<><^>>v^^><v>>>..><>>.^v<^<>>v<<^<^^^><.v.^^v<^.>v.<<.vv<<.^vv.<<^>>v>v^^v<v<<v<<<><><<<<^>^><.<',
+				'>><>.v>.v>.<^>><<.<>..v^<^v>v>>^.>^.v.^<vv>^<<vvv^vvv<>><^^.<<<<v^><.><>^^.<<<v>vv><<>>vv^>v>><<^>><^.v<<<^><<^vv<<..><<',
+				'<^><v^<^^>v><.><.^^<^>>>v<<^>^>^<<><.v^^v^v<^^v^^^<>^.<v><<^<>vv^>^^v^v<^vv.v^v<>>.v^>.v<<>><vvvvv<>^<<v>^^.v^>^^v^v<>.>',
+				'>^<<.^<.>.<>.^v^^<<v<.>><v.<>v<v^^>v>>v<<<^>vv<^vv^<><^v^.vv>v>^^>><^^v^>><>^>>v>v^>>v<vv.^>><<^<^.vv<><^^>>..v<v^vv><^<',
+				'<v><><^>>>^.>.v.^><..<v<<^>^v<>^>><^^v^><....v>>.>><>>v><vv<>^v^.><v^^^^^^v>v>.v<<v<^>><^v<^>^>.><^>vv>^>^v>.><>><v>vvv<',
+				'>^>v>v^^<vv^vv<vv>^^^.^><^>^vv.v^v>vvvvv>^^^>^>^<v><><><>v<<<<>^v^^<<.v^<^.^^^v<^^>^><<v<.<^v>>v.><<<>v^^v>>v^<^^^><>><<',
+				'>^<v^<vv.v<.^<vv.vv>^<.v>v^v>v<^.<<>.^vv.<<><v>vv<<>^.v.^<^^vv<v^^>^<v.v.<<.v^>v.^.^>v>v>^<>vvv>>^v<^^vvv.vv.<^v^><^^>><',
+				'>.^.vvv>vv><vvv^<^>^>.><<>v^v>vvv^v.v>>>.^<^^.^>>>>v.>v^>^>>><^>v^^<.>>>^<>v<>v.>>^v^vvv.v<^<<v<<^^vvv>>>^>^^.^>^>>.<<>.',
+				'<^v<^v<v.^.vv>v^>v^v.vv^<<>^<>^><>^<v^>^.>v.vv><^<.v^.^<vvvv^v>>^vv><<>>v>^v<<<.>vv<<^v^v>vvv>v..<><<v>^>>v^>^.^vv^<<<^<'
+			];
+			const input_test = [
+				'>>.<^<',
+				'.<..<<',
+				'>v.><>',
+				'<^v^^>'			
+			];
+			
+			const input = input_prod;
+			
+			const E = 1, U = 2, D = 4, L = 8, R = 16;
+			const maskNonE = L | R | U | D;
+			
+			const width = input[0].length;
+			const height = input.length;
+			
+			
+			let field = new Array(height);
+			let newField = new Array(height);
+			for ( let i = 0; i < height; i++ ) 
+			{
+				field[i] = Array.from(input[i]).map(x=>{
+					switch ( x ) {
+						case '.': return 0;
+						case '<': return L;
+						case '>': return R;
+						case '^': return U;
+						case 'v': return D;
+					}
+				});
+				newField[i] = new Array(width);
+			}
+			
+			const lastRow = height-1;
+			const lastCol = width-1;
+			
+			function drawField() {
+				for ( let row of field ) {
+					const sb = [];
+					for ( let x of row ) {
+						if ( x == 0 ) {
+							sb.push('.');
+						} else if ( x & E ) {
+							sb.push(x == E ? 'E' : '!');
+						} else if ( x == U ) {
+							sb.push('^');
+						} else if ( x == D ) {
+							sb.push('v');
+						} else if ( x == L ) {
+							sb.push('<');
+						} else if ( x == R ) {
+							sb.push('>');
+						} else {
+							sb.push(
+								(x & U ? 1 : 0 ) + 
+								(x & D ? 1 : 0 ) + 
+								(x & L ? 1 : 0 ) + 
+								(x & R ? 1 : 0 )
+							);
+							
+						}
+					}
+					log(sb.join(''));
+				}
+			}
+			
+			function clearElves() {
+				for ( let y = 0; y < height; y++ ) {
+					for ( let x = 0; x < width; x++ ) {
+						newField[y][x] &= maskNonE;
+					}
+				}
+			}
+			
+			let turn = 0;
+			let stage = 1;
+			//drawField();
+			while ( true ) {
+				turn++;
+				for ( let y = 0; y < height; y++ ) {
+					for ( let x = 0; x < width; x++ ) {
+						newField[y][x] = 
+							(field[(y+lastRow)%height][x] & (D | (y > 0))) |
+							(field[(y+1)%height][x] & (U | (y < lastRow))) |
+							(field[y][(x+lastCol)%width] & (R | (x > 0))) |
+							(field[y][(x+1)%width] & (L | (x < lastCol))) |
+							(field[y][x] & E);
+						newField[y][x] &= maskNonE | (newField[y][x] == E);
+					}
+				}
+				
+				if ( stage == 1 ) {
+					if ( newField[0][0] == 0 ) {
+						newField[0][0] = E;
+					}
+					
+					if ( field[lastRow][lastCol] == E ) {
+						stage = 2;
+						clearElves();
+						log(turn);
+					}					
+				} else if ( stage == 2 ) {
+					if ( newField[lastRow][lastCol] == 0 ) {
+						newField[lastRow][lastCol] = E;
+					}
+					
+					if ( field[0][0] == E ) {
+						stage = 3;
+						clearElves();
+					}					
+				} else {
+					if ( newField[0][0] == 0 ) {
+						newField[0][0] = E;
+					}
+					
+					if ( field[lastRow][lastCol] == E ) {
+						log(turn);
+						break;
+					}					
+				}
+				
+				
+				const tmp = field;
+				field = newField;
+				newField = tmp;
+			}
+
+		</script>	
+	</body>
+</html>
