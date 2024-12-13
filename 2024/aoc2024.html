@@ -17,6 +17,7 @@
 			<option value="6">Day 6</option>
 			<option value="7">Day 7</option>
 			<option value="8">Day 8</option>
+			<option value="9">Day 9</option>
 		</select>
 	</div>
 	<div>
@@ -433,6 +434,101 @@
 				}
 				
 				return `Answer 1: ${antinodes1.size} Answer 2: ${antinodes2.size}`;
+			},
+			"9": function (input) {
+				const data = Array.from(input).map(x=>parseInt(x));
+				const fsLen = data.reduce((acc, cur) => acc + cur, 0);
+
+				function buildFilesystem() {
+
+					const filesystem = new Array(fsLen); // Reserve enough memory at the start
+					let fileId = 0;
+					let isFile = true;
+					let p = 0;
+					for ( const n of data ) {
+						if ( isFile ) {
+							for ( let i = 0; i < n; i++ ) {
+								filesystem[p++] = fileId;
+							}
+							fileId++;
+							isFile = false;
+						} else {
+							for (let i = 0; i < n; i++) {
+								filesystem[p++] = -1;
+							}
+							isFile = true;
+						}
+					}
+					return filesystem;
+				}
+				function checksum(filesystem) {
+					let ret = 0;
+					for (let i = 0; i < fsLen; i++) {
+						if ( filesystem[i] != -1) {
+							ret += filesystem[i] * i;
+						}
+					}
+					return ret;
+				}
+				function defrag1() {
+					const filesystem = buildFilesystem();
+					let a = 0, b = fsLen - 1;
+					while (a < b) {
+						if (filesystem[b] == -1) {
+							b--;
+						} else if (filesystem[a] != -1) {
+							a++;
+						} else {
+							filesystem[a] = filesystem[b];
+							filesystem[b] = -1;
+							a++;
+							b--;
+						}
+					}
+					return filesystem;
+				}
+				function defrag2() {
+					const filesystem = buildFilesystem();
+					const filled = [], empty = [];
+					let isFull = true;
+					let p = 0;
+					for (const x of data) {
+						if ( isFull ) {
+							filled.push({start: p, len: x});
+						} else {
+							empty.push({start: p, len: x});
+						}
+						p+=x;
+						isFull = !isFull;
+					}
+
+					for ( let fullp = filled.length-1; fullp >= 0; fullp-- ) {
+						const fullEntry = filled[fullp];
+						for ( const emptyEntry of empty ) {
+							if ( emptyEntry.start >= fullEntry.start ) {
+								break;
+							}
+							if ( emptyEntry.len >= fullEntry.len ) {
+								for ( let i = 0; i < fullEntry.len; i++ ) {
+									filesystem[emptyEntry.start + i] = fullp;
+									filesystem[fullEntry.start + i] = -1;
+								}
+								emptyEntry.len -= fullEntry.len;
+								emptyEntry.start += fullEntry.len;
+								break;
+							}
+						}
+					}
+
+					return filesystem;
+				}
+
+				let answer1 = checksum(defrag1());
+				let answer2 = checksum(defrag2());
+				// 8391306139177 too high
+				// 8469171367125 too high
+
+				return `Answer 1: ${answer1} Answer 2: ${answer2}`;
 			}
 		}
 
